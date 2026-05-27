@@ -216,6 +216,7 @@ const phraseRules = [
 let state = loadState();
 let filter = "all";
 let activeQuestions = buildActiveQuestions();
+state.mode = "setup";
 
 const els = {
   startScreen: document.getElementById("start-screen"),
