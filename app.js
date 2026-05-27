@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sy0-701-practice-state-v3";
+const STORAGE_KEY = "sy0-701-practice-state-v4";
 const questions = window.QUESTION_BANK || [];
 
 const uiText = {
@@ -456,7 +456,8 @@ function renderQuestion() {
   els.text.textContent = renderQuestionText(q.question);
   els.source.textContent = `${t("source")}: ${q.question}`;
   els.source.classList.toggle("visible", false);
-  els.flag.textContent = state.flagged.includes(q.id) ? "取消標記" : "標記複查";
+  els.flag.textContent = "標記複查";
+  els.flag.classList.toggle("marked", state.flagged.includes(q.id));
   els.options.innerHTML = "";
 
   q.options.forEach((option) => {

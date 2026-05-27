@@ -319,15 +319,6 @@ footer {
   line-height: 1.6;
 }
 
-.float-pikachu {
-  position: absolute;
-  right: -34px;
-  top: 126px;
-  width: 82px;
-  image-rendering: pixelated;
-  pointer-events: none;
-}
-
 .exam-screen {
   display: grid;
   grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
@@ -473,15 +464,6 @@ footer {
   overflow: hidden;
 }
 
-.exam-pikachu {
-  position: absolute;
-  right: 54px;
-  top: 18px;
-  width: clamp(120px, 14vw, 190px);
-  image-rendering: pixelated;
-  pointer-events: none;
-}
-
 .question-header {
   display: flex;
   justify-content: space-between;
@@ -492,14 +474,6 @@ footer {
 
 .question-header h2 {
   font-size: clamp(34px, 5vw, 48px);
-}
-
-.flag-button {
-  width: 46px;
-  min-width: 46px;
-  padding: 0;
-  color: var(--gold-dark);
-  font-size: 26px;
 }
 
 .question-copy {
@@ -646,11 +620,6 @@ footer a {
     grid-template-columns: 1fr;
   }
 
-  .float-pikachu {
-    right: 14px;
-    top: 18px;
-  }
-
   .exam-side {
     max-height: none;
   }
@@ -661,11 +630,6 @@ footer a {
 
   .question-card {
     min-height: auto;
-  }
-
-  .exam-pikachu {
-    width: 96px;
-    right: 16px;
   }
 
   .question-header {
@@ -740,16 +704,6 @@ body[data-mode="result"] main {
   overflow: hidden;
 }
 
-.paper-pikachu {
-  position: absolute;
-  top: -22px;
-  left: 330px;
-  width: 76px;
-  image-rendering: pixelated;
-  pointer-events: none;
-  z-index: 2;
-}
-
 .exam-progress {
   display: flex;
   gap: 10px;
@@ -783,6 +737,10 @@ body[data-mode="result"] main {
   color: var(--ink);
   font-weight: 850;
   box-shadow: 0 3px 0 var(--ink);
+}
+
+#flag-button.marked {
+  background: #fff7df;
 }
 
 .submit-button {
