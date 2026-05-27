@@ -457,6 +457,11 @@ footer {
   background: #f2f3f5;
 }
 
+body[data-mode="exam"] .q-chip.unsupported {
+  color: var(--ink);
+  background: #fff;
+}
+
 .question-card {
   position: relative;
   min-height: calc(100vh - 132px);
@@ -798,9 +803,9 @@ body[data-mode="result"] main {
 
 body[data-mode="exam"] #question-text,
 body[data-mode="result"] #question-text {
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 1.7;
+  font-size: 17px !important;
+  font-weight: 400 !important;
+  line-height: 1.7 !important;
 }
 
 .english-source {
