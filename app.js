@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sy0-701-practice-state-v9";
+const STORAGE_KEY = "sy0-701-practice-state-v10";
 const questions = window.QUESTION_BANK || [];
 
 const uiText = {
@@ -233,6 +233,7 @@ const phraseRules = [
 let state = loadState();
 let filter = "all";
 let activeQuestions = buildActiveQuestions();
+let timerInterval = null;
 state.mode = "setup";
 
 const els = {
@@ -282,6 +283,7 @@ function loadState() {
     flagged: [],
     examIds: questions.slice(0, 45).map((q) => q.id),
     settings: { count: 45, time: 60, scope: "all", randomize: false },
+    examEndsAt: null,
   };
   try {
     return { ...fallback, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") };
@@ -333,10 +335,12 @@ function startExam() {
   state.index = 0;
   state.language = els.langSelect.value;
   state.settings = settings;
+  state.examEndsAt = settings.time > 0 ? Date.now() + settings.time * 60 * 1000 : null;
   state.examIds = picked.map((q) => q.id);
   activeQuestions = buildActiveQuestions();
   saveState();
   render();
+  startTimer();
 }
 
 function arraysEqual(a, b) {
@@ -399,7 +403,7 @@ function renderStats() {
   els.statWrong.textContent = wrong;
   els.progressQuestion.textContent = `題目 ${state.index + 1} / ${activeQuestions.length}`;
   els.progressAnswered.textContent = `已作答 ${selectedCount} / ${activeQuestions.length}`;
-  els.progressTime.textContent = state.settings?.time ? `剩餘 ${String(state.settings.time).padStart(2, "0")}:00` : "不限時間";
+  updateTimerDisplay();
   els.progressBarFill.style.width = `${activeQuestions.length ? ((state.index + 1) / activeQuestions.length) * 100 : 0}%`;
 }
 
@@ -802,6 +806,43 @@ function move(delta) {
   render();
 }
 
+function formatTime(ms) {
+  const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+function updateTimerDisplay() {
+  if (!els.progressTime) return;
+  if (state.mode !== "exam" || !state.examEndsAt) {
+    els.progressTime.textContent = state.settings?.time ? `剩餘 ${String(state.settings.time).padStart(2, "0")}:00` : "不限時間";
+    return;
+  }
+  const remaining = state.examEndsAt - Date.now();
+  els.progressTime.textContent = `剩餘 ${formatTime(remaining)}`;
+  if (remaining <= 0) {
+    submitExam();
+  }
+}
+
+function stopTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+function startTimer() {
+  stopTimer();
+  if (state.mode !== "exam" || !state.examEndsAt) {
+    updateTimerDisplay();
+    return;
+  }
+  updateTimerDisplay();
+  timerInterval = setInterval(updateTimerDisplay, 1000);
+}
+
 function gradeExam() {
   activeQuestions.forEach((q) => {
     if (q.unsupported) return;
@@ -810,6 +851,7 @@ function gradeExam() {
 }
 
 function submitExam() {
+  stopTimer();
   gradeExam();
   state.mode = "result";
   saveState();
@@ -905,7 +947,9 @@ function render() {
 
 document.getElementById("start-button").addEventListener("click", startExam);
 document.getElementById("back-to-setup").addEventListener("click", () => {
+  stopTimer();
   state.mode = "setup";
+  state.examEndsAt = null;
   saveState();
   render();
 });
@@ -978,10 +1022,12 @@ document.getElementById("reset-button").addEventListener("click", () => {
 });
 document.getElementById("submit-button").addEventListener("click", submitExam);
 document.getElementById("restart-button").addEventListener("click", () => {
+  stopTimer();
   state.selected = {};
   state.results = {};
   state.index = 0;
   state.mode = "setup";
+  state.examEndsAt = null;
   saveState();
   render();
 });
@@ -990,6 +1036,7 @@ document.getElementById("review-wrong-button").addEventListener("click", () => {
   state.mode = "exam";
   state.index = activeQuestions.findIndex((q) => state.results[q.id] === false);
   if (state.index < 0) state.index = 0;
+  state.examEndsAt = null;
   saveState();
   render();
 });
@@ -1011,3 +1058,4 @@ document.addEventListener("keydown", (event) => {
 });
 
 render();
+startTimer();
