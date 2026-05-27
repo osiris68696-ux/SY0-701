@@ -931,6 +931,10 @@ body[data-mode="exam"] #english-source.visible {
   display: none !important;
 }
 
+body[data-mode="result"] img {
+  display: none !important;
+}
+
 .score-report {
   position: relative;
   overflow: hidden;

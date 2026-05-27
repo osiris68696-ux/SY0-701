@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sy0-701-practice-state-v7";
+const STORAGE_KEY = "sy0-701-practice-state-v8";
 const questions = window.QUESTION_BANK || [];
 
 const uiText = {
@@ -473,6 +473,54 @@ function explainQuestion(q) {
 
   const rules = [
     {
+      test: /confidentiality|data leak|disclosure|encrypt|dlp|sensitive data|proprietary|confidential/,
+      title: "CIA Triad - Confidentiality 機密性",
+      why: "用途：防止未授權的人看到資料。實際用法包含加密、權限控管、資料分類與 DLP。若題目重點是資料外洩、敏感資料、機密文件或未授權讀取，通常是在考機密性。",
+      tip: "看到 protect sensitive data、prevent disclosure、confidential/proprietary information，先往 Confidentiality、Encryption、DLP 或 Access control 判斷。",
+    },
+    {
+      test: /integrity|tamper|modified|hash|digital signature|file integrity|not been modi/,
+      title: "CIA Triad - Integrity 完整性",
+      why: "用途：確認資料沒有被未授權竄改。實際用法包含 Hash、數位簽章、檔案完整性監控。Hash 側重偵測是否改變，Digital signature 進一步證明來源可信。",
+      tip: "題目問確認檔案是否被改，通常選 Hash；若同時要求驗證來源或發布者，選 Digital signature / Code signing。",
+    },
+    {
+      test: /availability|uptime|unavailable|outage|ddos|load balancing|generator|fail-open|high availability/,
+      title: "CIA Triad - Availability 可用性",
+      why: "用途：確保系統與服務不中斷。實際用法包含備援、備份、負載平衡、DDoS 防護、發電機與高可用架構。",
+      tip: "看到 service unavailable、power outage、SLA、failover、high availability，優先從 Availability 角度選答案。",
+    },
+    {
+      test: /authentication|mfa|biometrics|password|credential|token|certificate/,
+      title: "AAA - Authentication 驗證",
+      why: "用途：確認使用者或系統的身份。實際用法包含密碼、MFA、憑證、生物辨識與驗證權杖。MFA 可降低密碼外洩後的帳號入侵風險。",
+      tip: "看到 login、credential、identity、MFA、biometrics，先判斷是否是在考 Authentication。",
+    },
+    {
+      test: /authorization|rbac|abac|acl|permissions|least privilege|access to|only.*access/,
+      title: "AAA - Authorization 授權與 Least Privilege 最小權限",
+      why: "用途：控制已驗證的使用者能做什麼。實際用法包含 RBAC、ABAC、ACL、最小權限。只給完成工作所需權限，可降低帳號被盜或誤用時的影響。",
+      tip: "看到 only certain users、permissions needed、administrator console、access limited，通常是在考 Authorization 或 Least privilege。",
+    },
+    {
+      test: /accounting|audit log|logging|siem|log|tracked|record/,
+      title: "AAA - Accounting 記錄與 SIEM",
+      why: "用途：追蹤使用者或系統做過什麼。實際用法包含 Log、SIEM、稽核紀錄。SIEM 可集中分析防火牆、伺服器、AD、EDR 與雲端日誌，找出異常行為。",
+      tip: "看到 audit trail、login source IP、impossible travel、reconstruct timeline，通常要找 logs 或 SIEM。",
+    },
+    {
+      test: /zero trust|adaptive identity|subject role|secured zones|micro-segmentation|continuous monitoring/,
+      title: "Zero Trust 零信任",
+      why: "用途：取代內網就是安全的舊觀念。核心是永遠驗證身份、檢查裝置狀態、只給最小必要權限、持續監控並切小網路區段。",
+      tip: "看到 never trust、adaptive identity、device posture、micro-segmentation、continuous verification，往 Zero Trust 原則判斷。",
+    },
+    {
+      test: /preventive|detective|corrective|deterrent|compensating|security control|acceptable use policy/,
+      title: "Security Controls 安全控制",
+      why: "用途：用不同控制降低風險。Technical 是技術控制，例如防火牆、EDR、加密、MFA；Administrative 是制度，例如政策與教育訓練；Physical 是門禁、CCTV、機房鎖。",
+      tip: "題目若問 control type，要先分清楚是技術/管理/實體，或是預防/偵測/修正/嚇阻/補償。",
+    },
+    {
       test: /jump server|bastion host/,
       title: "跳板伺服器 / 堡壘主機",
       why: "當管理者不能直接連到受保護的伺服器區段時，應透過受控的中介主機進入。這能集中記錄、控管與限制管理連線。",
@@ -555,6 +603,36 @@ function explainQuestion(q) {
       title: "未加密網站辨識",
       why: "HTTP 流量未使用 TLS 加密；HTTPS 通常使用 443。若要阻擋非加密網站，URL 字串中最直接的特徵是 http://。",
       tip: "題目問 prohibit non-encrypted websites，選 http://。",
+    },
+    {
+      test: /vulnerability|cvss|scan|remediation|patching|exposure/,
+      title: "Vulnerability Management 弱點管理",
+      why: "用途：找出弱點並排定修補優先順序。流程通常是掃描、分析嚴重性、評估業務影響、修補或緩解、重新掃描確認並文件化追蹤。",
+      tip: "看到 CVSS 通常是在考 prioritization；高風險且暴露網際網路的弱點通常優先修。",
+    },
+    {
+      test: /incident response|containment|eradication|recovery|lessons learned|malware infection|host isolation/,
+      title: "Incident Response 事件應變",
+      why: "用途：安全事件發生時依標準流程處理。常見流程是準備、偵測、分析、圍堵、根除、復原、事後檢討。隔離主機通常是 containment。",
+      tip: "看到 infected host、malicious traffic、isolate、eradicate、recover，要先判斷事件應變階段。",
+    },
+    {
+      test: /risk|insurance|avoid|mitigate|transfer|accept|risk register|risk tolerance/,
+      title: "Risk Management 風險管理",
+      why: "用途：決定資安處理優先順序與預算。Avoid 是避免高風險活動；Mitigate 是加控制降低風險；Transfer 是買保險或外包轉移風險；Accept 是接受剩餘風險。",
+      tip: "看到 cyber insurance 幾乎就是 Transfer；看到 risk register 是記錄風險、負責人、門檻與處理方式。",
+    },
+    {
+      test: /bcp|drp|bia|rto|rpo|mttr|mtbf|backup|restore|hot site|warm site|cold site/,
+      title: "BCP / DRP 營運持續與災難復原",
+      why: "用途：讓公司在事故或災難後能持續或恢復營運。RTO 是最長可接受停機時間；RPO 是最多可接受資料遺失量；DRP 側重 IT 系統復原。",
+      tip: "題目問 restore process 多半是 DRP；問資料最多可遺失多久是 RPO；問多久內恢復是 RTO。",
+    },
+    {
+      test: /shared responsibility|iaas|saas|cloud|s3|security group|casb/,
+      title: "Cloud Security 雲端安全",
+      why: "用途：釐清雲端供應商與客戶各自責任。供應商通常負責基礎設施；客戶負責資料、帳號、設定與應用程式安全。",
+      tip: "看到 IaaS 中的 OS、資料庫、帳號與資料，多半是客戶責任；SaaS 風險控管可想到 CASB。",
     },
   ];
 
@@ -724,6 +802,7 @@ function renderResult() {
           <li>${escapeHtml(explanation.why)}</li>
         </ul>
         <p><strong>考試小技巧：</strong>${escapeHtml(explanation.tip)}</p>
+        <p><strong>判斷方式：</strong>先找題目中的關鍵字，再對應到最能降低風險或最符合情境的控制、流程或攻擊類型。</p>
       </div>
     `;
     els.wrongAnalysis.appendChild(card);
