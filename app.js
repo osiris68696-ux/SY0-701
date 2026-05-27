@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sy0-701-practice-state-v2";
+const STORAGE_KEY = "sy0-701-practice-state-v3";
 const questions = window.QUESTION_BANK || [];
 
 const uiText = {
@@ -187,6 +187,23 @@ const glossary = new Map(Object.entries({
   "Zero Trust": "零信任",
 }));
 
+glossary.set("Hardening", "強化");
+glossary.set("Employee monitoring", "員工監控");
+glossary.set("Configuration enforcement", "組態強制執行");
+glossary.set("Disaster recovery plan", "災難復原計畫");
+glossary.set("Incident response procedure", "事件回應程序");
+glossary.set("Business continuity plan", "營運持續計畫");
+glossary.set("Open-source intelligence", "開源情報");
+glossary.set("Nation-state", "國家級行為者");
+glossary.set("Input validation", "輸入驗證");
+glossary.set("Code signing", "程式碼簽章");
+glossary.set("Change control request", "變更控制請求");
+glossary.set("Root cause analysis", "根因分析");
+glossary.set("Audit findings", "稽核發現");
+glossary.set("Reputation damage", "聲譽損害");
+glossary.set("Geographic dispersion", "地理分散");
+glossary.set("Tabletop exercise", "桌上演練");
+
 const phraseRules = [
   [/Which of the following/gi, "下列哪一項"],
   [/best describes/gi, "最能描述"],
@@ -252,7 +269,7 @@ function loadState() {
     results: {},
     flagged: [],
     examIds: questions.slice(0, 45).map((q) => q.id),
-    settings: { count: 45, time: 60, scope: "all", randomize: true },
+    settings: { count: 45, time: 60, scope: "all", randomize: false },
   };
   try {
     return { ...fallback, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") };
@@ -329,12 +346,12 @@ function applyPhraseRules(text) {
 function renderOptionText(text) {
   if (state.language === "en") return text;
   const normalized = text.replace(/\.$/, "");
-  const translated = glossary.get(text) || glossary.get(normalized) || applyPhraseRules(text);
-  return `${translated} (${text})`;
+  const translated = glossary.get(text) || glossary.get(normalized);
+  return translated ? `${translated} (${text})` : text;
 }
 
 function renderQuestionText(question) {
-  return state.language === "en" ? question : applyPhraseRules(question);
+  return question;
 }
 
 function syncSetupControls() {
@@ -343,7 +360,7 @@ function syncSetupControls() {
   els.timeSelect.value = String(settings.time ?? 60);
   els.langSelect.value = state.language || "zh";
   els.scopeSelect.value = settings.scope || "all";
-  els.randomize.checked = settings.randomize !== false;
+  els.randomize.checked = settings.randomize === true;
   els.setupCount.textContent = els.countSelect.value;
   els.setupTime.textContent = els.timeSelect.value === "0" ? "∞" : els.timeSelect.value;
 }
