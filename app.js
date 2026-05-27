@@ -455,8 +455,8 @@ function renderQuestion() {
   els.topic.textContent = `Topic ${q.topic} · ${q.multiSelect ? t("chooseMany") : t("chooseOne")}`;
   els.text.textContent = renderQuestionText(q.question);
   els.source.textContent = `${t("source")}: ${q.question}`;
-  els.source.classList.toggle("visible", state.language === "zh");
-  els.flag.textContent = state.flagged.includes(q.id) ? "★" : "☆";
+  els.source.classList.toggle("visible", false);
+  els.flag.textContent = state.flagged.includes(q.id) ? "取消標記" : "標記複查";
   els.options.innerHTML = "";
 
   q.options.forEach((option) => {
@@ -587,6 +587,7 @@ function render() {
   syncSetupControls();
   const inExam = state.mode === "exam";
   const inResult = state.mode === "result";
+  document.body.dataset.mode = state.mode;
   els.startScreen.classList.toggle("hidden", inExam || inResult);
   els.examScreen.classList.toggle("hidden", !inExam);
   els.resultScreen.classList.toggle("hidden", !inResult);

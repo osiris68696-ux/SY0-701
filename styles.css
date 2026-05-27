@@ -708,6 +708,22 @@ footer a {
   gap: 18px;
 }
 
+body[data-mode="exam"],
+body[data-mode="result"] {
+  border-top: 4px solid var(--gold);
+}
+
+body[data-mode="exam"] .topbar,
+body[data-mode="result"] .topbar {
+  display: none;
+}
+
+body[data-mode="exam"] main,
+body[data-mode="result"] main {
+  width: min(1172px, calc(100% - 56px));
+  margin-top: 20px;
+}
+
 .exam-paper,
 .nav-card,
 .score-report,
@@ -726,9 +742,9 @@ footer a {
 
 .paper-pikachu {
   position: absolute;
-  top: -18px;
+  top: -22px;
   left: 330px;
-  width: 90px;
+  width: 76px;
   image-rendering: pixelated;
   pointer-events: none;
   z-index: 2;
@@ -832,16 +848,28 @@ footer a {
 }
 
 .exam-options .option {
+  display: block;
   min-height: 62px;
   border: 0;
   background: #315bc5;
   color: #fff;
   font-size: 16px;
+  line-height: 1.45;
+  padding: 12px 14px;
 }
 
 .exam-options .option .label {
-  color: var(--ink);
-  background: #fff;
+  display: inline;
+  width: auto;
+  height: auto;
+  margin-right: 6px;
+  border-radius: 0;
+  color: #fff;
+  background: transparent;
+}
+
+.exam-options .option .label::after {
+  content: ".";
 }
 
 .exam-options .option.selected {
@@ -858,9 +886,18 @@ footer a {
 }
 
 .exam-feedback {
+  display: none;
   min-height: 0;
   margin-top: 14px;
   color: var(--muted);
+}
+
+body[data-mode="result"] .exam-feedback {
+  display: block;
+}
+
+body[data-mode="exam"] #english-source.visible {
+  display: none;
 }
 
 .exam-bottom-actions {
