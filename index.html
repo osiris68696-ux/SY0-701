@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SY0-701 Interactive Practice</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-panel">
+        <div class="brand">
+          <img class="gengar" src="assets/gengar.gif" alt="Gengar" />
+          <div>
+            <p class="eyebrow">CompTIA Security+</p>
+            <h1>SY0-701 考古題</h1>
+          </div>
+        </div>
+
+        <div class="stat-grid" aria-label="quiz statistics">
+          <div><strong id="stat-total">611</strong><span data-i18n="total">總題數</span></div>
+          <div><strong id="stat-done">0</strong><span data-i18n="done">已作答</span></div>
+          <div><strong id="stat-score">0%</strong><span data-i18n="score">正確率</span></div>
+          <div><strong id="stat-wrong">0</strong><span data-i18n="wrong">錯題</span></div>
+        </div>
+
+        <div class="controls">
+          <div class="segmented" role="group" aria-label="language">
+            <button id="lang-zh" class="active" type="button">中文</button>
+            <button id="lang-en" type="button">English</button>
+          </div>
+          <div class="segmented" role="group" aria-label="filter">
+            <button data-filter="all" class="active" type="button" data-i18n="all">全部</button>
+            <button data-filter="wrong" type="button" data-i18n="wrongOnly">錯題</button>
+            <button data-filter="flagged" type="button" data-i18n="flagged">收藏</button>
+          </div>
+          <label class="search-box">
+            <span data-i18n="jump">跳題</span>
+            <input id="jump-input" type="number" min="1" max="611" placeholder="1-611" />
+          </label>
+        </div>
+
+        <div id="question-list" class="question-list" aria-label="question list"></div>
+      </aside>
+
+      <main class="quiz-panel">
+        <img class="pikachu" src="assets/pikachu-transparent.gif" alt="Pikachu" />
+        <section class="toolbar">
+          <div>
+            <p id="topic-label" class="eyebrow">Topic 1</p>
+            <h2 id="question-title">Question #1</h2>
+          </div>
+          <button id="flag-button" class="icon-button" type="button" title="flag">☆</button>
+        </section>
+
+        <section class="question-block">
+          <p id="question-text"></p>
+          <p id="english-source" class="source-text"></p>
+        </section>
+
+        <section id="options" class="options" aria-label="answer options"></section>
+
+        <section id="feedback" class="feedback" aria-live="polite"></section>
+
+        <section class="actions">
+          <button id="prev-button" type="button" data-i18n="prev">上一題</button>
+          <button id="check-button" class="primary" type="button" data-i18n="check">檢查答案</button>
+          <button id="reveal-button" type="button" data-i18n="reveal">顯示答案</button>
+          <button id="next-button" type="button" data-i18n="next">下一題</button>
+          <button id="random-button" type="button" data-i18n="random">隨機</button>
+          <button id="reset-button" class="danger" type="button" data-i18n="reset">重置</button>
+        </section>
+
+        <footer>
+          <span data-i18n="reference">參考互動樣式</span>
+          <a href="https://osiris68696-ux.github.io/AI-900-interactive-practice/?restart=1779864898805" target="_blank" rel="noreferrer">AI-900 interactive practice</a>
+        </footer>
+      </main>
+    </div>
+
+    <script src="questions.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

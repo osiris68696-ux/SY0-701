@@ -1,0 +1,524 @@
+const STORAGE_KEY = "sy0-701-practice-state-v1";
+const questions = window.QUESTION_BANK;
+
+const uiText = {
+  zh: {
+    total: "總題數",
+    done: "已作答",
+    score: "正確率",
+    wrong: "錯題",
+    all: "全部",
+    wrongOnly: "錯題",
+    flagged: "收藏",
+    jump: "跳題",
+    prev: "上一題",
+    check: "檢查答案",
+    reveal: "顯示答案",
+    next: "下一題",
+    random: "隨機",
+    reset: "重置",
+    reference: "參考互動樣式",
+    chooseOne: "選擇 1 個答案",
+    chooseMany: "可複選",
+    selectFirst: "請先選擇答案。",
+    correct: "答對了。",
+    incorrect: "答錯了。",
+    answerIs: "正確答案",
+    unsupported: "這題在 PDF 中是 Hotspot/Simulation 或缺少正解文字，保留題目供複習，無法自動評分。",
+    source: "英文原題",
+  },
+  en: {
+    total: "Total",
+    done: "Answered",
+    score: "Score",
+    wrong: "Wrong",
+    all: "All",
+    wrongOnly: "Wrong",
+    flagged: "Flagged",
+    jump: "Jump",
+    prev: "Previous",
+    check: "Check",
+    reveal: "Reveal",
+    next: "Next",
+    random: "Random",
+    reset: "Reset",
+    reference: "Reference style",
+    chooseOne: "Choose one answer",
+    chooseMany: "Multiple select",
+    selectFirst: "Select an answer first.",
+    correct: "Correct.",
+    incorrect: "Incorrect.",
+    answerIs: "Correct answer",
+    unsupported: "This PDF item is a Hotspot/Simulation or has no extracted answer, so it is kept for review and cannot be auto-graded.",
+    source: "English source",
+  },
+};
+
+const glossary = new Map(Object.entries({
+  "Accept": "接受",
+  "Access card": "門禁卡",
+  "Access control": "存取控制",
+  "Access management": "存取管理",
+  "Account lockout": "帳號鎖定",
+  "Active": "主動式",
+  "Adaptive identity": "自適應身分",
+  "Air gap": "實體隔離",
+  "Application": "應用程式",
+  "Authentication": "驗證",
+  "Authentication tokens": "驗證權杖",
+  "Availability": "可用性",
+  "Avoid": "避免",
+  "Bastion host": "堡壘主機",
+  "Biometrics": "生物辨識",
+  "Blackmail": "勒索",
+  "Brand impersonation": "品牌冒充",
+  "Brute-force": "暴力破解",
+  "Buffer overflow": "緩衝區溢位",
+  "Bug bounty": "漏洞獎勵計畫",
+  "Business email compromise": "商務電子郵件詐騙",
+  "Capacity planning": "容量規劃",
+  "Change management procedure": "變更管理程序",
+  "Cloud provider": "雲端服務提供者",
+  "Cold site": "冷備援站台",
+  "Confidentiality": "機密性",
+  "Conflict of interest policy": "利益衝突政策",
+  "Containment": "圍堵",
+  "Content categorization": "內容分類",
+  "Cross-site scripting": "跨站腳本攻擊",
+  "Cryptographic": "密碼學相關",
+  "Dashboard": "儀表板",
+  "Data classification": "資料分類",
+  "Data controller": "資料控制者",
+  "Data custodian": "資料保管者",
+  "Data masking": "資料遮罩",
+  "Data processor": "資料處理者",
+  "Data sovereignty": "資料主權",
+  "Defensive": "防禦型",
+  "Digital forensics": "數位鑑識",
+  "Disaster recovery plan": "災難復原計畫",
+  "Disinformation": "假訊息",
+  "DLP": "資料外洩防護",
+  "DNS service": "DNS 服務",
+  "DoS attack": "阻斷服務攻擊",
+  "Due diligence": "盡職調查",
+  "Encryption": "加密",
+  "Endpoint": "端點",
+  "Espionage": "間諜活動",
+  "Firmware version": "韌體版本",
+  "Firewall": "防火牆",
+  "Full disk": "全磁碟",
+  "Generator": "發電機",
+  "Geolocation policy": "地理位置政策",
+  "Hacktivist": "駭客行動主義者",
+  "Hash collision": "雜湊碰撞",
+  "Hashing": "雜湊",
+  "Hashing algorithm": "雜湊演算法",
+  "Heuristic": "啟發式",
+  "Hot site": "熱備援站台",
+  "Hypervisor": "虛擬機器監視器",
+  "Impersonation": "冒充",
+  "Impossible travel": "不可能移動",
+  "Incident response": "事件回應",
+  "Input validation": "輸入驗證",
+  "Insider threat": "內部威脅",
+  "Intellectual property": "智慧財產",
+  "Intrusion prevention system": "入侵防禦系統",
+  "IoT": "物聯網",
+  "Jailbreaking": "越獄",
+  "Jump server": "跳板伺服器",
+  "Key stretching": "金鑰延展",
+  "Least privilege": "最小權限",
+  "Load balancer": "負載平衡器",
+  "Memory injection": "記憶體注入",
+  "MFA": "多因素驗證",
+  "Misinformation": "錯誤資訊",
+  "Multifactor authentication": "多因素驗證",
+  "Nation-state": "國家級行為者",
+  "Network": "網路",
+  "Network segmentation": "網路分段",
+  "Non-repudiation": "不可否認性",
+  "Obfuscation": "混淆",
+  "Offensive": "攻擊型",
+  "On-path attack": "路徑中攻擊",
+  "Organized crime": "組織犯罪",
+  "Password complexity": "密碼複雜度",
+  "Password spraying": "密碼噴灑",
+  "Password vaulting": "密碼保管庫",
+  "Passive": "被動式",
+  "Patching": "修補",
+  "Penetration testing": "滲透測試",
+  "Permissions assignment": "權限指派",
+  "Philosophical beliefs": "理念信念",
+  "Phishing": "網路釣魚",
+  "Pretexting": "藉口詐騙",
+  "Preparation": "準備",
+  "Privacy": "隱私",
+  "Proxy server": "代理伺服器",
+  "Quantitative": "定量",
+  "RADIUS": "RADIUS",
+  "Recovery": "復原",
+  "Red team": "紅隊",
+  "Redundancy": "備援",
+  "Resource reuse": "資源重用",
+  "Revenge": "報復",
+  "Right-to-audit clause": "稽核權條款",
+  "Risk analysis": "風險分析",
+  "Risk register": "風險登錄表",
+  "Risk tolerance": "風險容忍度",
+  "Risk transfer": "風險轉移",
+  "Rootkit": "Rootkit",
+  "Rules of engagement": "交戰規則",
+  "Salting": "加鹽",
+  "Sandbox environment": "沙箱環境",
+  "SD-WAN": "軟體定義廣域網路",
+  "Secure cookies": "安全 Cookie",
+  "Security guard": "保全人員",
+  "Security awareness training": "資安意識訓練",
+  "SIEM": "安全資訊與事件管理",
+  "Side loading": "側載",
+  "Simulated phishing campaign": "模擬釣魚演練",
+  "Single sign-on": "單一登入",
+  "Situational awareness": "情境意識",
+  "Smishing": "簡訊釣魚",
+  "Snapshots": "快照",
+  "Social engineering": "社交工程",
+  "SOW": "工作說明書",
+  "SQL injection": "SQL 注入",
+  "SSO": "單一登入",
+  "Steganography": "隱寫術",
+  "Supply chain": "供應鏈",
+  "Supply chain analysis": "供應鏈分析",
+  "Threat hunting": "威脅獵捕",
+  "Tokenization": "權杖化",
+  "Typosquatting": "錯字網域搶註",
+  "Unskilled attacker": "低技能攻擊者",
+  "Version control": "版本控制",
+  "Vishing": "語音釣魚",
+  "VPN": "虛擬私人網路",
+  "WAF": "Web 應用程式防火牆",
+  "Warm site": "溫備援站台",
+  "Watering-hole": "水坑攻擊",
+  "Whistleblower": "吹哨者",
+  "Worm": "蠕蟲",
+  "Zero Trust": "零信任",
+}));
+
+const phraseRules = [
+  [/Which of the following/gi, "下列哪一項"],
+  [/best describes/gi, "最能描述"],
+  [/best protects/gi, "最能保護"],
+  [/most likely/gi, "最可能"],
+  [/should the administrator implement/gi, "管理員應實作"],
+  [/should the organization use/gi, "組織應使用"],
+  [/security analyst/gi, "資安分析師"],
+  [/security administrator/gi, "資安管理員"],
+  [/organization/gi, "組織"],
+  [/company/gi, "公司"],
+  [/employee/gi, "員工"],
+  [/attack/gi, "攻擊"],
+  [/vulnerability/gi, "弱點"],
+  [/network/gi, "網路"],
+  [/data/gi, "資料"],
+  [/access/gi, "存取"],
+  [/password/gi, "密碼"],
+  [/cloud/gi, "雲端"],
+  [/incident/gi, "事件"],
+  [/risk/gi, "風險"],
+  [/logs/gi, "記錄"],
+  [/\(Choose two\.\)/gi, "（選擇兩項）"],
+  [/\(Choose three\.\)/gi, "（選擇三項）"],
+];
+
+let state = loadState();
+let filter = "all";
+
+const els = {
+  list: document.getElementById("question-list"),
+  title: document.getElementById("question-title"),
+  topic: document.getElementById("topic-label"),
+  text: document.getElementById("question-text"),
+  source: document.getElementById("english-source"),
+  options: document.getElementById("options"),
+  feedback: document.getElementById("feedback"),
+  flag: document.getElementById("flag-button"),
+  jump: document.getElementById("jump-input"),
+  statTotal: document.getElementById("stat-total"),
+  statDone: document.getElementById("stat-done"),
+  statScore: document.getElementById("stat-score"),
+  statWrong: document.getElementById("stat-wrong"),
+};
+
+function loadState() {
+  const fallback = { index: 0, language: "zh", selected: {}, results: {}, flagged: [] };
+  try {
+    return { ...fallback, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") };
+  } catch {
+    return fallback;
+  }
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function t(key) {
+  return uiText[state.language][key];
+}
+
+function arraysEqual(a, b) {
+  return [...a].sort().join("") === [...b].sort().join("");
+}
+
+function selectedFor(id) {
+  return state.selected[id] || [];
+}
+
+function renderOptionText(text) {
+  if (state.language === "en") return text;
+  const exact = glossary.get(text);
+  if (exact) return `${exact} (${text})`;
+  const normalized = text.replace(/\.$/, "");
+  const normalizedMatch = glossary.get(normalized);
+  if (normalizedMatch) return `${normalizedMatch} (${text})`;
+  return `${applyPhraseRules(text)} (${text})`;
+}
+
+function applyPhraseRules(text) {
+  let output = text;
+  for (const [pattern, replacement] of phraseRules) {
+    output = output.replace(pattern, replacement);
+  }
+  return output;
+}
+
+function renderQuestionText(question) {
+  if (state.language === "en") return question;
+  return applyPhraseRules(question);
+}
+
+function updateLanguage() {
+  document.documentElement.lang = state.language === "zh" ? "zh-Hant" : "en";
+  document.querySelectorAll("[data-i18n]").forEach((node) => {
+    node.textContent = t(node.dataset.i18n);
+  });
+  document.getElementById("lang-zh").classList.toggle("active", state.language === "zh");
+  document.getElementById("lang-en").classList.toggle("active", state.language === "en");
+}
+
+function renderStats() {
+  const answered = Object.keys(state.results).length;
+  const correct = Object.values(state.results).filter(Boolean).length;
+  const wrong = Object.values(state.results).filter((value) => value === false).length;
+  els.statTotal.textContent = questions.length;
+  els.statDone.textContent = answered;
+  els.statScore.textContent = answered ? `${Math.round((correct / answered) * 100)}%` : "0%";
+  els.statWrong.textContent = wrong;
+}
+
+function filteredQuestions() {
+  if (filter === "wrong") return questions.filter((q) => state.results[q.id] === false);
+  if (filter === "flagged") return questions.filter((q) => state.flagged.includes(q.id));
+  return questions;
+}
+
+function renderList() {
+  const visible = filteredQuestions();
+  els.list.innerHTML = "";
+  visible.forEach((q) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "q-chip";
+    button.textContent = q.id;
+    button.classList.toggle("current", questions[state.index].id === q.id);
+    button.classList.toggle("correct", state.results[q.id] === true);
+    button.classList.toggle("wrong", state.results[q.id] === false);
+    button.classList.toggle("flagged", state.flagged.includes(q.id));
+    button.classList.toggle("unsupported", q.unsupported);
+    button.addEventListener("click", () => {
+      state.index = questions.findIndex((item) => item.id === q.id);
+      saveState();
+      render();
+    });
+    els.list.appendChild(button);
+  });
+}
+
+function renderQuestion() {
+  const q = questions[state.index];
+  const selected = selectedFor(q.id);
+  const result = state.results[q.id];
+
+  els.title.textContent = state.language === "zh" ? `第 ${q.id} 題` : `Question #${q.id}`;
+  els.topic.textContent = `Topic ${q.topic} · ${q.multiSelect ? t("chooseMany") : t("chooseOne")}`;
+  els.text.textContent = renderQuestionText(q.question);
+  els.source.textContent = `${t("source")}: ${q.question}`;
+  els.source.classList.toggle("visible", state.language === "zh");
+  els.flag.textContent = state.flagged.includes(q.id) ? "★" : "☆";
+  els.options.innerHTML = "";
+
+  q.options.forEach((option) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "option";
+    button.disabled = q.unsupported;
+    button.innerHTML = `<span class="label">${option.label}</span><span>${renderOptionText(option.text)}</span>`;
+    button.classList.toggle("selected", selected.includes(option.label));
+    if (result !== undefined) {
+      button.classList.toggle("correct", q.answer.includes(option.label));
+      button.classList.toggle("incorrect", selected.includes(option.label) && !q.answer.includes(option.label));
+    }
+    button.addEventListener("click", () => selectOption(q, option.label));
+    els.options.appendChild(button);
+  });
+
+  if (q.unsupported) {
+    els.feedback.className = "feedback warn";
+    els.feedback.textContent = t("unsupported");
+  } else if (result === true) {
+    els.feedback.className = "feedback good";
+    els.feedback.textContent = `${t("correct")} ${answerText(q)}`;
+  } else if (result === false) {
+    els.feedback.className = "feedback bad";
+    els.feedback.textContent = `${t("incorrect")} ${answerText(q)}`;
+  } else {
+    els.feedback.className = "feedback";
+    els.feedback.textContent = q.multiSelect ? t("chooseMany") : t("chooseOne");
+  }
+
+  document.getElementById("prev-button").disabled = state.index === 0;
+  document.getElementById("next-button").disabled = state.index === questions.length - 1;
+  document.getElementById("check-button").disabled = q.unsupported;
+  document.getElementById("reveal-button").disabled = q.unsupported;
+}
+
+function answerText(q) {
+  const parts = q.answer.map((label) => {
+    const option = q.options.find((item) => item.label === label);
+    return option ? `${label}. ${renderOptionText(option.text)}` : label;
+  });
+  return `${t("answerIs")}: ${parts.join(" / ")}`;
+}
+
+function selectOption(q, label) {
+  if (q.unsupported) return;
+  const current = new Set(selectedFor(q.id));
+  if (q.multiSelect) {
+    current.has(label) ? current.delete(label) : current.add(label);
+  } else {
+    current.clear();
+    current.add(label);
+  }
+  state.selected[q.id] = [...current];
+  delete state.results[q.id];
+  saveState();
+  render();
+}
+
+function checkCurrent() {
+  const q = questions[state.index];
+  if (q.unsupported) return;
+  const selected = selectedFor(q.id);
+  if (!selected.length) {
+    els.feedback.className = "feedback warn";
+    els.feedback.textContent = t("selectFirst");
+    return;
+  }
+  state.results[q.id] = arraysEqual(selected, q.answer);
+  saveState();
+  render();
+}
+
+function revealCurrent() {
+  const q = questions[state.index];
+  if (q.unsupported) return;
+  state.selected[q.id] = [...q.answer];
+  state.results[q.id] = true;
+  saveState();
+  render();
+}
+
+function move(delta) {
+  state.index = Math.min(Math.max(state.index + delta, 0), questions.length - 1);
+  saveState();
+  render();
+}
+
+function render() {
+  updateLanguage();
+  renderStats();
+  renderList();
+  renderQuestion();
+}
+
+document.getElementById("lang-zh").addEventListener("click", () => {
+  state.language = "zh";
+  saveState();
+  render();
+});
+
+document.getElementById("lang-en").addEventListener("click", () => {
+  state.language = "en";
+  saveState();
+  render();
+});
+
+document.querySelectorAll("[data-filter]").forEach((button) => {
+  button.addEventListener("click", () => {
+    filter = button.dataset.filter;
+    document.querySelectorAll("[data-filter]").forEach((node) => node.classList.toggle("active", node === button));
+    renderList();
+  });
+});
+
+els.jump.addEventListener("change", () => {
+  const id = Number(els.jump.value);
+  const index = questions.findIndex((q) => q.id === id);
+  if (index >= 0) {
+    state.index = index;
+    els.jump.value = "";
+    saveState();
+    render();
+  }
+});
+
+els.flag.addEventListener("click", () => {
+  const id = questions[state.index].id;
+  state.flagged = state.flagged.includes(id)
+    ? state.flagged.filter((item) => item !== id)
+    : [...state.flagged, id];
+  saveState();
+  render();
+});
+
+document.getElementById("check-button").addEventListener("click", checkCurrent);
+document.getElementById("reveal-button").addEventListener("click", revealCurrent);
+document.getElementById("prev-button").addEventListener("click", () => move(-1));
+document.getElementById("next-button").addEventListener("click", () => move(1));
+document.getElementById("random-button").addEventListener("click", () => {
+  state.index = Math.floor(Math.random() * questions.length);
+  saveState();
+  render();
+});
+document.getElementById("reset-button").addEventListener("click", () => {
+  state = { index: 0, language: state.language, selected: {}, results: {}, flagged: [] };
+  saveState();
+  render();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.target instanceof HTMLInputElement) return;
+  const q = questions[state.index];
+  const key = event.key.toUpperCase();
+  if (["A", "B", "C", "D", "E", "F", "G", "H"].includes(key)) {
+    const option = q.options.find((item) => item.label === key);
+    if (option) selectOption(q, key);
+  } else if (event.key === "Enter") {
+    checkCurrent();
+  } else if (event.key === "ArrowRight") {
+    move(1);
+  } else if (event.key === "ArrowLeft") {
+    move(-1);
+  }
+});
+
+render();
