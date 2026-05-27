@@ -107,72 +107,89 @@
         </aside>
       </section>
 
-      <section id="exam-screen" class="exam-screen hidden">
-        <aside class="exam-side">
-          <div class="side-brand">
-            <img src="assets/gengar.gif" alt="Gengar" />
-            <div>
-              <p>COMPTIA SECURITY+</p>
-              <h2>SY0-701</h2>
+      <section id="exam-screen" class="exam-layout hidden">
+        <article class="exam-paper">
+          <img class="paper-pikachu" src="assets/pikachu-transparent.gif" alt="" />
+          <header class="exam-progress">
+            <div class="pill" id="progress-question">題目 1 / 45</div>
+            <div class="pill" id="progress-answered">已作答 0 / 45</div>
+            <div class="pill" id="progress-time">剩餘 60:00</div>
+            <div class="exam-top-actions">
+              <button id="flag-button" type="button">標記複查</button>
+              <button id="submit-button" class="submit-button" type="button">交卷</button>
             </div>
-          </div>
-
-          <div class="exam-stats">
-            <div><strong id="stat-total">0</strong><span data-i18n="total">總題數</span></div>
-            <div><strong id="stat-done">0</strong><span data-i18n="done">已作答</span></div>
-            <div><strong id="stat-score">0%</strong><span data-i18n="score">正確率</span></div>
-            <div><strong id="stat-wrong">0</strong><span data-i18n="wrong">錯題</span></div>
-          </div>
-
-          <div class="side-actions">
-            <button id="lang-zh" class="active" type="button">中文</button>
-            <button id="lang-en" type="button">English</button>
-            <button data-filter="all" class="active" type="button" data-i18n="all">全部</button>
-            <button data-filter="wrong" type="button" data-i18n="wrongOnly">錯題</button>
-            <button data-filter="flagged" type="button" data-i18n="flagged">收藏</button>
-            <button id="back-to-setup" type="button">設定</button>
-          </div>
-
-          <label class="jump-box">
-            <span data-i18n="jump">跳題</span>
-            <input id="jump-input" type="number" min="1" max="611" placeholder="1-611" />
-          </label>
-
-          <div id="question-list" class="question-list" aria-label="question list"></div>
-        </aside>
-
-        <article class="question-card">
-          <img class="exam-pikachu" src="assets/pikachu-transparent.gif" alt="Pikachu" />
-          <header class="question-header">
-            <div>
-              <p id="topic-label">Topic 1</p>
-              <h2 id="question-title">第 1 題</h2>
-            </div>
-            <button id="flag-button" class="flag-button" type="button" title="收藏">☆</button>
           </header>
 
-          <section class="question-copy">
-            <p id="question-text"></p>
-            <p id="english-source"></p>
+          <div class="progress-bar"><span id="progress-bar-fill"></span></div>
+
+          <section class="exam-question-box">
+            <p id="topic-label" class="domain-label">Topic 1 · 選擇 1 個答案</p>
+            <hr />
+            <h2 id="question-title">第 1 題</h2>
+            <p id="question-text" class="exam-question-text"></p>
+            <p id="english-source" class="english-source"></p>
+            <section id="options" class="exam-options" aria-label="answer options"></section>
+            <section id="feedback" class="exam-feedback" aria-live="polite"></section>
           </section>
 
-          <section id="options" class="options" aria-label="answer options"></section>
-          <section id="feedback" class="feedback" aria-live="polite"></section>
-
-          <div class="question-actions">
+          <div class="exam-bottom-actions">
             <button id="prev-button" type="button" data-i18n="prev">上一題</button>
-            <button id="check-button" class="primary" type="button" data-i18n="check">檢查答案</button>
-            <button id="reveal-button" type="button" data-i18n="reveal">顯示答案</button>
             <button id="next-button" type="button" data-i18n="next">下一題</button>
-            <button id="random-button" type="button" data-i18n="random">隨機</button>
-            <button id="reset-button" class="danger" type="button" data-i18n="reset">重置</button>
+            <button id="check-button" class="hidden" type="button" data-i18n="check">檢查答案</button>
+            <button id="reveal-button" class="hidden" type="button" data-i18n="reveal">顯示答案</button>
+            <button id="random-button" class="hidden" type="button" data-i18n="random">隨機</button>
+            <button id="reset-button" class="hidden" type="button" data-i18n="reset">重置</button>
+            <button id="lang-zh" class="hidden" type="button">中文</button>
+            <button id="lang-en" class="hidden" type="button">English</button>
+            <button data-filter="all" class="hidden active" type="button" data-i18n="all">全部</button>
+            <button data-filter="wrong" class="hidden" type="button" data-i18n="wrongOnly">錯題</button>
+            <button data-filter="flagged" class="hidden" type="button" data-i18n="flagged">收藏</button>
+            <button id="back-to-setup" class="hidden" type="button">設定</button>
+            <input id="jump-input" class="hidden" type="number" min="1" max="45" />
+            <span id="stat-total" class="hidden">0</span>
+            <span id="stat-done" class="hidden">0</span>
+            <span id="stat-score" class="hidden">0%</span>
+            <span id="stat-wrong" class="hidden">0</span>
           </div>
-
-          <footer>
-            <span data-i18n="reference">參考互動樣式</span>
-            <a href="https://osiris68696-ux.github.io/AI-900-interactive-practice/?restart=1779864898805" target="_blank" rel="noreferrer">AI-900 interactive practice</a>
-          </footer>
         </article>
+
+        <aside class="nav-card">
+          <h2>題號導覽</h2>
+          <div id="question-list" class="exam-question-list" aria-label="question list"></div>
+          <p>綠線代表已作答，淡橙代表已標記複查。交卷後可開啟每題解析。</p>
+        </aside>
+      </section>
+
+      <section id="result-screen" class="result-screen hidden">
+        <div class="score-report">
+          <img class="result-pikachu" src="assets/pikachu-transparent.gif" alt="" />
+          <header>
+            <div>
+              <h2>CompTIA Security+ Score Report</h2>
+              <p>SY0-701 CompTIA Security+</p>
+            </div>
+            <strong id="result-pass-label">未通過</strong>
+          </header>
+          <div class="score-body">
+            <div class="score-number">
+              <span>YOUR SCORE</span>
+              <strong id="result-score">0</strong>
+              <p>Passing Score: 750</p>
+            </div>
+            <div class="score-details">
+              <p id="result-summary">答對 0 / 45 (0%)。</p>
+              <div class="result-metrics">
+                <div><strong id="result-correct">0</strong><span>答對題數</span></div>
+                <div><strong id="result-count">45</strong><span>可計分題數</span></div>
+                <div><strong id="result-percent">0%</strong><span>正確率</span></div>
+              </div>
+              <button id="restart-button" type="button">重考一次</button>
+              <button id="review-wrong-button" type="button">重新檢視錯題</button>
+            </div>
+          </div>
+        </div>
+        <h2 class="analysis-title">錯題解析</h2>
+        <div id="wrong-analysis" class="wrong-analysis"></div>
       </section>
     </main>
 

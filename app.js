@@ -238,6 +238,7 @@ state.mode = "setup";
 const els = {
   startScreen: document.getElementById("start-screen"),
   examScreen: document.getElementById("exam-screen"),
+  resultScreen: document.getElementById("result-screen"),
   countSelect: document.getElementById("question-count-select"),
   timeSelect: document.getElementById("time-select"),
   langSelect: document.getElementById("language-select"),
@@ -258,6 +259,17 @@ const els = {
   statDone: document.getElementById("stat-done"),
   statScore: document.getElementById("stat-score"),
   statWrong: document.getElementById("stat-wrong"),
+  progressQuestion: document.getElementById("progress-question"),
+  progressAnswered: document.getElementById("progress-answered"),
+  progressTime: document.getElementById("progress-time"),
+  progressBarFill: document.getElementById("progress-bar-fill"),
+  resultPassLabel: document.getElementById("result-pass-label"),
+  resultScore: document.getElementById("result-score"),
+  resultSummary: document.getElementById("result-summary"),
+  resultCorrect: document.getElementById("result-correct"),
+  resultCount: document.getElementById("result-count"),
+  resultPercent: document.getElementById("result-percent"),
+  wrongAnalysis: document.getElementById("wrong-analysis"),
 };
 
 function loadState() {
@@ -380,10 +392,15 @@ function renderStats() {
   const answered = relevantResults.length;
   const correct = relevantResults.filter(([, value]) => value === true).length;
   const wrong = relevantResults.filter(([, value]) => value === false).length;
+  const selectedCount = activeQuestions.filter((q) => selectedFor(q.id).length > 0).length;
   els.statTotal.textContent = activeQuestions.length;
   els.statDone.textContent = answered;
   els.statScore.textContent = answered ? `${Math.round((correct / answered) * 100)}%` : "0%";
   els.statWrong.textContent = wrong;
+  els.progressQuestion.textContent = `題目 ${state.index + 1} / ${activeQuestions.length}`;
+  els.progressAnswered.textContent = `已作答 ${selectedCount} / ${activeQuestions.length}`;
+  els.progressTime.textContent = state.settings?.time ? `剩餘 ${String(state.settings.time).padStart(2, "0")}:00` : "不限時間";
+  els.progressBarFill.style.width = `${activeQuestions.length ? ((state.index + 1) / activeQuestions.length) * 100 : 0}%`;
 }
 
 function filteredQuestions() {
@@ -401,13 +418,15 @@ function renderList() {
   const qNow = currentQuestion();
   els.list.innerHTML = "";
   filteredQuestions().forEach((q) => {
+    const sequence = activeQuestions.findIndex((item) => item.id === q.id) + 1;
     const button = document.createElement("button");
     button.type = "button";
     button.className = "q-chip";
-    button.textContent = q.id;
+    button.textContent = sequence;
     button.classList.toggle("current", qNow.id === q.id);
-    button.classList.toggle("correct", state.results[q.id] === true);
-    button.classList.toggle("wrong", state.results[q.id] === false);
+    button.classList.toggle("answered", selectedFor(q.id).length > 0);
+    button.classList.toggle("correct", state.mode === "result" && state.results[q.id] === true);
+    button.classList.toggle("wrong", state.mode === "result" && state.results[q.id] === false);
     button.classList.toggle("flagged", state.flagged.includes(q.id));
     button.classList.toggle("unsupported", q.unsupported);
     button.addEventListener("click", () => {
@@ -432,7 +451,7 @@ function renderQuestion() {
   const selected = selectedFor(q.id);
   const result = state.results[q.id];
 
-  els.title.textContent = state.language === "zh" ? `第 ${q.id} 題` : `Question #${q.id}`;
+  els.title.textContent = state.language === "zh" ? `第 ${state.index + 1} 題` : `Question #${state.index + 1}`;
   els.topic.textContent = `Topic ${q.topic} · ${q.multiSelect ? t("chooseMany") : t("chooseOne")}`;
   els.text.textContent = renderQuestionText(q.question);
   els.source.textContent = `${t("source")}: ${q.question}`;
@@ -447,7 +466,7 @@ function renderQuestion() {
     button.disabled = q.unsupported;
     button.innerHTML = `<span class="label">${option.label}</span><span>${renderOptionText(option.text)}</span>`;
     button.classList.toggle("selected", selected.includes(option.label));
-    if (result !== undefined) {
+    if (state.mode === "result" && result !== undefined) {
       button.classList.toggle("correct", q.answer.includes(option.label));
       button.classList.toggle("incorrect", selected.includes(option.label) && !q.answer.includes(option.label));
     }
@@ -458,10 +477,10 @@ function renderQuestion() {
   if (q.unsupported) {
     els.feedback.className = "feedback warn";
     els.feedback.textContent = t("unsupported");
-  } else if (result === true) {
+  } else if (state.mode === "result" && result === true) {
     els.feedback.className = "feedback good";
     els.feedback.textContent = `${t("correct")} ${answerText(q)}`;
-  } else if (result === false) {
+  } else if (state.mode === "result" && result === false) {
     els.feedback.className = "feedback bad";
     els.feedback.textContent = `${t("incorrect")} ${answerText(q)}`;
   } else {
@@ -485,7 +504,7 @@ function selectOption(q, label) {
     current.add(label);
   }
   state.selected[q.id] = [...current];
-  delete state.results[q.id];
+  if (state.mode !== "result") delete state.results[q.id];
   saveState();
   render();
 }
@@ -519,12 +538,62 @@ function move(delta) {
   render();
 }
 
+function gradeExam() {
+  activeQuestions.forEach((q) => {
+    if (q.unsupported) return;
+    state.results[q.id] = arraysEqual(selectedFor(q.id), q.answer);
+  });
+}
+
+function renderResult() {
+  const gradable = activeQuestions.filter((q) => !q.unsupported);
+  const correct = gradable.filter((q) => state.results[q.id] === true).length;
+  const total = gradable.length || activeQuestions.length;
+  const percent = total ? Math.round((correct / total) * 100) : 0;
+  const score = Math.round(percent * 10);
+  const passed = score >= 750;
+
+  els.resultPassLabel.textContent = passed ? "通過" : "未通過";
+  els.resultPassLabel.classList.toggle("passed", passed);
+  els.resultScore.textContent = score;
+  els.resultSummary.textContent = `答對 ${correct} / ${total} (${percent}%)。`;
+  els.resultCorrect.textContent = correct;
+  els.resultCount.textContent = total;
+  els.resultPercent.textContent = `${percent}%`;
+  els.wrongAnalysis.innerHTML = "";
+
+  const wrongItems = activeQuestions.filter((q) => !q.unsupported && state.results[q.id] === false);
+  if (!wrongItems.length) {
+    els.wrongAnalysis.innerHTML = `<p class="empty-analysis">沒有錯題。</p>`;
+    return;
+  }
+
+  wrongItems.forEach((q) => {
+    const sequence = activeQuestions.findIndex((item) => item.id === q.id) + 1;
+    const card = document.createElement("article");
+    card.className = "analysis-card";
+    card.innerHTML = `
+      <h3>錯題 ${sequence} | 得分 0 / 1</h3>
+      <p class="analysis-question">第 ${sequence} 題 ${q.multiSelect ? "（複選題）" : "（選擇題）"}</p>
+      <p>${q.question}</p>
+      <p><strong>${answerText(q)}</strong></p>
+    `;
+    els.wrongAnalysis.appendChild(card);
+  });
+}
+
 function render() {
   activeQuestions = buildActiveQuestions();
   syncSetupControls();
   const inExam = state.mode === "exam";
-  els.startScreen.classList.toggle("hidden", inExam);
+  const inResult = state.mode === "result";
+  els.startScreen.classList.toggle("hidden", inExam || inResult);
   els.examScreen.classList.toggle("hidden", !inExam);
+  els.resultScreen.classList.toggle("hidden", !inResult);
+  if (inResult) {
+    renderResult();
+    return;
+  }
   if (!inExam) return;
   updateLanguage();
   renderStats();
@@ -571,8 +640,7 @@ document.querySelectorAll("[data-filter]").forEach((button) => {
 });
 
 els.jump.addEventListener("change", () => {
-  const id = Number(els.jump.value);
-  const index = activeQuestions.findIndex((q) => q.id === id);
+  const index = Number(els.jump.value) - 1;
   if (index >= 0) {
     state.index = index;
     els.jump.value = "";
@@ -603,6 +671,28 @@ document.getElementById("reset-button").addEventListener("click", () => {
   state.selected = {};
   state.results = {};
   state.index = 0;
+  saveState();
+  render();
+});
+document.getElementById("submit-button").addEventListener("click", () => {
+  gradeExam();
+  state.mode = "result";
+  saveState();
+  render();
+});
+document.getElementById("restart-button").addEventListener("click", () => {
+  state.selected = {};
+  state.results = {};
+  state.index = 0;
+  state.mode = "setup";
+  saveState();
+  render();
+});
+document.getElementById("review-wrong-button").addEventListener("click", () => {
+  filter = "wrong";
+  state.mode = "exam";
+  state.index = activeQuestions.findIndex((q) => state.results[q.id] === false);
+  if (state.index < 0) state.index = 0;
   saveState();
   render();
 });
