@@ -1081,6 +1081,54 @@ body[data-mode="result"] img {
   padding: 0;
 }
 
+.all-options-box {
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid #d6e2f5;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.all-options-box > p {
+  margin: 0 0 12px;
+}
+
+.all-options-box ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.option-explanation {
+  border: 1px solid #d6e2f5;
+  border-left: 4px solid #8aa7df;
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: #fbfdff;
+}
+
+.option-explanation.correct {
+  border-left-color: var(--green);
+  background: #f6fbf8;
+}
+
+.option-explanation.chosen-wrong {
+  border-left-color: var(--red);
+  background: #fff8f7;
+}
+
+.option-explanation h4 {
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+
+.option-explanation p {
+  margin: 6px 0;
+  line-height: 1.65;
+}
+
 .empty-analysis {
   border: 1px solid var(--line);
   border-radius: 8px;

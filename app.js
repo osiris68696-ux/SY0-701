@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sy0-701-practice-state-v8";
+const STORAGE_KEY = "sy0-701-practice-state-v9";
 const questions = window.QUESTION_BANK || [];
 
 const uiText = {
@@ -647,6 +647,65 @@ function explainQuestion(q) {
   };
 }
 
+function explainOption(optionText, isCorrect, q) {
+  const text = optionText.toLowerCase();
+  const conceptRules = [
+    [/key stretching/, ["Key stretching 金鑰延展", "用途是讓密碼雜湊運算變慢、變難暴力破解，常見做法是 PBKDF2、bcrypt、scrypt、Argon2。它會重複執行雜湊很多次，提高攻擊成本。"]],
+    [/salting/, ["Salting 加鹽", "用途是在雜湊前加入隨機值，讓相同密碼產生不同雜湊，防止 rainbow table 與大量預先計算攻擊。題目問 one-way transformation 前增加額外複雜度，通常就是加鹽。"]],
+    [/data masking/, ["Data masking 資料遮罩", "用途是隱藏敏感資料的一部分，例如只顯示信用卡末四碼。它用於降低資料暴露風險，不是用來強化雜湊演算法。"]],
+    [/steganography/, ["Steganography 隱寫術", "用途是把資料藏在圖片、音訊或其他媒體中，重點是隱藏資料存在本身，不是密碼雜湊保護。"]],
+    [/sso|single sign-on/, ["SSO 單一登入", "用途是讓使用者用一組身分憑證登入多個系統或 SaaS，降低帳密數量並集中身分管理。"]],
+    [/mfa|multifactor/, ["MFA 多因素驗證", "用途是要求兩種以上驗證因素，例如密碼加手機推播，降低密碼外洩後被登入的風險。"]],
+    [/phishing/, ["Phishing 網路釣魚", "用途/目的不是防禦工具，而是一種攻擊：誘騙使用者點連結、輸入帳密或下載惡意檔案。"]],
+    [/smishing/, ["Smishing 簡訊釣魚", "用途/目的同釣魚，但媒介是 SMS/簡訊。看到 text message 或 SMS 要優先想到 Smishing。"]],
+    [/vishing/, ["Vishing 語音釣魚", "用途/目的同釣魚，但媒介是電話或語音。"]],
+    [/impersonation/, ["Impersonation 冒充", "用途/目的是假冒主管、同事、品牌或可信單位，讓受害者相信訊息來源。"]],
+    [/pretexting/, ["Pretexting 藉口詐騙", "用途/目的是假造一個合理情境或身分，誘導對方提供資訊或執行動作。"]],
+    [/jump server/, ["Jump server 跳板伺服器", "用途是作為管理內部伺服器的受控入口，集中控管、記錄與限制管理連線。不能直接連資料庫或內部區段時常用它。"]],
+    [/bastion host/, ["Bastion host 堡壘主機", "用途是放在邊界或受控區域，作為進入內部資源的強化入口，功能上常與 jump server 類似。"]],
+    [/waf/, ["WAF Web 應用程式防火牆", "用途是保護 Web application，阻擋 SQL injection、XSS、部分 exploit 流量。題目聚焦網站或 Web app 時通常比一般防火牆更貼切。"]],
+    [/firewall/, ["Firewall 防火牆", "用途是根據 IP、port、protocol 或規則控制網路流量。它管流量邊界，不一定能理解 Web 應用層攻擊細節。"]],
+    [/ids|ips/, ["IDS/IPS 入侵偵測/防禦", "用途是偵測或阻擋可疑網路活動。IDS 偏偵測告警，IPS 可主動阻擋。"]],
+    [/least privilege/, ["Least privilege 最小權限", "用途是只給使用者或系統完成工作所需的最低權限，降低帳號濫用或被盜後的損害範圍。"]],
+    [/hardening/, ["Hardening 強化", "用途是減少攻擊面，例如關閉不必要服務、移除預設帳號、套用安全組態。它是系統加固，不是單純權限分配。"]],
+    [/employee monitoring/, ["Employee monitoring 員工監控", "用途是監看員工行為、活動或合規狀態。它可偵測問題，但不是用來限制管理主控台權限的主要技術。"]],
+    [/configuration enforcement/, ["Configuration enforcement 組態強制執行", "用途是確保系統維持指定安全設定，例如 GPO 或 MDM 強制設定。它偏組態一致性，不是描述只給少數人存取權限。"]],
+    [/risk register/, ["Risk register 風險登錄表", "用途是記錄風險、負責人、處理方式、門檻與狀態，方便追蹤風險管理工作。"]],
+    [/transfer/, ["Risk transfer 風險轉移", "用途是把風險的財務或營運影響轉移給第三方，例如購買資安保險或外包服務。"]],
+    [/accept/, ["Risk acceptance 風險接受", "用途是在風險低或成本不划算時，正式接受剩餘風險並記錄決策。"]],
+    [/mitigate/, ["Risk mitigation 風險降低", "用途是透過控制措施降低風險，例如修補漏洞、加 MFA、部署 WAF。"]],
+    [/avoid/, ["Risk avoidance 風險避免", "用途是停止或不進行高風險活動，例如停用不安全服務。"]],
+    [/hashing/, ["Hashing 雜湊", "用途是產生不可逆摘要，用來驗證完整性或儲存密碼摘要。Hash 不能還原原文。"]],
+    [/encryption/, ["Encryption 加密", "用途是保護機密性，讓未授權者看不到資料內容。加密是可逆的，需要金鑰解密。"]],
+    [/digital signature|code signing/, ["Digital signature / Code signing 數位簽章", "用途是驗證來源與完整性，確認檔案來自可信發布者且未被竄改。"]],
+    [/input validation/, ["Input validation 輸入驗證", "用途是限制輸入格式與內容，降低 SQL injection、XSS 等注入攻擊風險。"]],
+    [/tokenization/, ["Tokenization 權杖化", "用途是用 token 取代敏感資料，原始資料存於安全系統中；常用在支付卡或金融資料保護。"]],
+    [/dlp/, ["DLP 資料外洩防護", "用途是偵測並阻止敏感資料被不當傳送、複製或外洩。"]],
+    [/rto/, ["RTO 復原時間目標", "用途是定義系統中斷後最長可接受多久內恢復服務。"]],
+    [/rpo/, ["RPO 復原點目標", "用途是定義最多可接受遺失多少時間範圍內的資料。"]],
+    [/hot site/, ["Hot site 熱備援站台", "用途是提供幾乎可立即接手的備援環境，成本高但復原最快。"]],
+    [/warm site/, ["Warm site 溫備援站台", "用途是已有部分設備與設定，但仍需補資料或啟動流程，復原速度介於 hot/cold site。"]],
+    [/cold site/, ["Cold site 冷備援站台", "用途是提供基本場地與基礎設施，成本低但復原最慢。"]],
+    [/siem/, ["SIEM 安全資訊與事件管理", "用途是集中收集與關聯分析日誌，產生告警並協助事件調查。"]],
+    [/endpoint/, ["Endpoint 端點紀錄", "用途是從使用者裝置或伺服器取得程序、檔案、惡意程式與行為資訊，適合調查可疑執行檔。"]],
+    [/application/, ["Application log 應用程式紀錄", "用途是記錄應用程式錯誤、事件與交易狀態，適合查應用層問題。"]],
+    [/network/, ["Network log 網路紀錄", "用途是觀察連線、流量方向、來源與目的地，適合調查通訊行為。"]],
+    [/cvss/, ["CVSS 通用弱點評分系統", "用途是評估漏洞嚴重性，協助排定修補優先順序。"]],
+    [/patching/, ["Patching 修補", "用途是套用更新以修正漏洞、錯誤或安全缺陷，是弱點管理的主要處置方式。"]],
+    [/incident response/, ["Incident response 事件應變", "用途是在安全事件發生時依流程偵測、分析、圍堵、根除與復原。"]],
+    [/containment/, ["Containment 圍堵", "用途是在事件中限制影響範圍，例如隔離主機或阻擋惡意 IP。"]],
+    [/recovery/, ["Recovery 復原", "用途是在威脅移除後恢復系統與服務到正常狀態。"]],
+  ];
+
+  const matched = conceptRules.find(([pattern]) => pattern.test.test(text));
+  const title = matched ? matched[1][0] : `${optionText}`;
+  const usage = matched ? matched[1][1] : `用途要依題目情境判斷。這個選項代表一種控制、流程、攻擊類型或治理文件；作答時要確認它是否直接滿足題目問的需求。`;
+  const verdict = isCorrect
+    ? "本題選它，因為它最直接符合題目中的關鍵條件。"
+    : "本題不選它，因為它雖然可能是相關資安概念，但不是題目情境中最直接或最精準的答案。";
+  return { title, usage, verdict };
+}
+
 function renderQuestion() {
   const q = currentQuestion();
   const selected = selectedFor(q.id);
@@ -786,6 +845,17 @@ function renderResult() {
     const sequence = activeQuestions.findIndex((item) => item.id === q.id) + 1;
     const explanation = explainQuestion(q);
     const selected = selectedFor(q.id);
+    const optionExplanations = q.options.map((option) => {
+      const detail = explainOption(option.text, q.answer.includes(option.label), q);
+      const status = q.answer.includes(option.label) ? "correct" : selected.includes(option.label) ? "chosen-wrong" : "neutral";
+      return `
+        <li class="option-explanation ${status}">
+          <h4>${escapeHtml(option.label)}. ${escapeHtml(renderOptionText(option.text))}</h4>
+          <p><strong>用途：</strong>${escapeHtml(detail.usage)}</p>
+          <p><strong>本題判斷：</strong>${escapeHtml(detail.verdict)}</p>
+        </li>
+      `;
+    }).join("");
     const card = document.createElement("article");
     card.className = "analysis-card";
     card.innerHTML = `
@@ -803,6 +873,10 @@ function renderResult() {
         </ul>
         <p><strong>考試小技巧：</strong>${escapeHtml(explanation.tip)}</p>
         <p><strong>判斷方式：</strong>先找題目中的關鍵字，再對應到最能降低風險或最符合情境的控制、流程或攻擊類型。</p>
+      </div>
+      <div class="all-options-box">
+        <p><strong>每個答案用途說明：</strong></p>
+        <ul>${optionExplanations}</ul>
       </div>
     `;
     els.wrongAnalysis.appendChild(card);
