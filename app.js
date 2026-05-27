@@ -446,6 +446,129 @@ function answerText(q) {
   return `${t("answerIs")}: ${parts.join(" / ")}`;
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function optionDisplay(q, labels) {
+  if (!labels.length) return "未作答";
+  return labels.map((label) => {
+    const option = q.options.find((item) => item.label === label);
+    return option ? `${label}. ${renderOptionText(option.text)}` : label;
+  }).join(" / ");
+}
+
+function explainQuestion(q) {
+  const answerOptions = q.answer
+    .map((label) => q.options.find((option) => option.label === label)?.text || "")
+    .join(" ")
+    .toLowerCase();
+  const prompt = q.question.toLowerCase();
+  const combined = `${prompt} ${answerOptions}`;
+
+  const rules = [
+    {
+      test: /jump server|bastion host/,
+      title: "跳板伺服器 / 堡壘主機",
+      why: "當管理者不能直接連到受保護的伺服器區段時，應透過受控的中介主機進入。這能集中記錄、控管與限制管理連線。",
+      tip: "題目出現 administrative access、internal resources、minimizing traffic、prevent direct access，優先聯想到 Jump server 或 Bastion host。",
+    },
+    {
+      test: /smishing|text message|sms/,
+      title: "簡訊釣魚與冒充",
+      why: "透過簡訊要求憑證、付款或禮品卡通常屬於 Smishing；若訊息假冒主管、部門或可信任身分，還包含 Impersonation。",
+      tip: "看到 text message/SMS 就先判斷 Smishing；看到 pretending/claiming to be 就判斷 Impersonation。",
+    },
+    {
+      test: /phishing|brand impersonation|credential/,
+      title: "釣魚與憑證竊取",
+      why: "要求使用者點連結並輸入登入資訊，是典型的 Phishing。若攻擊者假冒知名服務或品牌，則是 Brand impersonation。",
+      tip: "題目提到 email link、login information、credential verification，通常是在考 Phishing。",
+    },
+    {
+      test: /side loading|approved software repository/,
+      title: "側載風險",
+      why: "從官方或核准來源以外安裝軟體，可能繞過安全檢查並引入惡意程式，這種行為稱為 Side loading。",
+      tip: "看到 outside approved repository、untrusted app source，優先選 Side loading。",
+    },
+    {
+      test: /sso|single sign-on|domain credentials/,
+      title: "單一登入",
+      why: "SSO 讓使用者用既有網域或身分提供者的憑證存取多個 SaaS 應用，減少需要維護的帳密數量。",
+      tip: "題目問 reduce credentials、domain credentials、SaaS access，通常選 SSO。",
+    },
+    {
+      test: /waf|buffer overflow|website|web application/,
+      title: "Web 應用程式防火牆",
+      why: "WAF 用來保護 Web 應用程式，能偵測並阻擋常見 Web 攻擊流量。若題目限定 internet-facing website 或 web application，WAF 通常比一般防火牆更精準。",
+      tip: "看到 website/web application + exploit/attack，先確認是否需要 WAF。",
+    },
+    {
+      test: /multifactor authentication|mfa|suspicious ip|password/,
+      title: "多因素驗證",
+      why: "即使密碼外洩，MFA 仍要求第二個驗證因素，可降低異常登入或帳號盜用成功率。",
+      tip: "題目問如何防止 stolen password、suspicious login succeeding，優先考慮 MFA。",
+    },
+    {
+      test: /least privilege/,
+      title: "最小權限",
+      why: "Least privilege 只授予完成工作所需的最低權限，可降低誤用或遭入侵後的影響範圍。",
+      tip: "看到 only specific users have access、permissions needed for job role，通常是 Least privilege。",
+    },
+    {
+      test: /risk register/,
+      title: "風險登錄表",
+      why: "Risk register 用來記錄風險、負責人、處理方式與門檻，是風險管理追蹤文件。",
+      tip: "題目問 document risks、responsible parties、thresholds，選 Risk register。",
+    },
+    {
+      test: /transfer|cyber insurance/,
+      title: "風險轉移",
+      why: "購買保險或把部分責任交由第三方承擔，是將風險財務影響轉移出去，不是消除風險。",
+      tip: "看到 insurance，幾乎就是 Risk transfer。",
+    },
+    {
+      test: /input validation|sql injection|cross-site scripting|injection/,
+      title: "輸入驗證",
+      why: "Injection 與 XSS 多半源於未正確處理使用者輸入。Input validation 可限制輸入格式與內容，降低惡意資料被執行的機率。",
+      tip: "看到 form field、SQL injection、XSS、injection attacks，優先考慮 Input validation。",
+    },
+    {
+      test: /change management|change control|patch/,
+      title: "變更管理",
+      why: "在正式環境套用修補或調整防火牆規則前，應先走 change management/change control，確保核准、測試與回復計畫完整。",
+      tip: "題目問 production system 的 patch 或 firewall rule 第一件事，通常是 change request。",
+    },
+    {
+      test: /root cause analysis/,
+      title: "根因分析",
+      why: "Root cause analysis 的目的不是只處理表面症狀，而是找出根本原因，避免同類事件再次發生。",
+      tip: "看到 prevent future incidents of the same nature，就是 Root cause analysis 的目的。",
+    },
+    {
+      test: /http:\/\/|non-encrypted|encrypted websites/,
+      title: "未加密網站辨識",
+      why: "HTTP 流量未使用 TLS 加密；HTTPS 通常使用 443。若要阻擋非加密網站，URL 字串中最直接的特徵是 http://。",
+      tip: "題目問 prohibit non-encrypted websites，選 http://。",
+    },
+  ];
+
+  const matched = rules.find((rule) => rule.test.test(combined));
+  if (matched) return matched;
+
+  const correct = optionDisplay(q, q.answer);
+  return {
+    title: "關鍵概念判斷",
+    why: `本題正確選項是 ${correct}。作答時應先抓題目中的關鍵限制條件，再選擇最直接滿足該需求的控制、攻擊類型或治理文件。`,
+    tip: "Security+ 題目通常在考最精準的名詞對應；先排除太廣泛、太事後或不符合情境的選項。",
+  };
+}
+
 function renderQuestion() {
   const q = currentQuestion();
   const selected = selectedFor(q.id);
@@ -583,13 +706,25 @@ function renderResult() {
 
   wrongItems.forEach((q) => {
     const sequence = activeQuestions.findIndex((item) => item.id === q.id) + 1;
+    const explanation = explainQuestion(q);
+    const selected = selectedFor(q.id);
     const card = document.createElement("article");
     card.className = "analysis-card";
     card.innerHTML = `
       <h3>錯題 ${sequence} | 得分 0 / 1</h3>
       <p class="analysis-question">第 ${sequence} 題 ${q.multiSelect ? "（複選題）" : "（選擇題）"}</p>
-      <p>${q.question}</p>
-      <p><strong>${answerText(q)}</strong></p>
+      <p>${escapeHtml(q.question)}</p>
+      <div class="answer-box">
+        <p><strong>你的答案：</strong>${escapeHtml(optionDisplay(q, selected))}</p>
+        <p><strong>${escapeHtml(answerText(q))}</strong></p>
+      </div>
+      <div class="explanation-box">
+        <p><strong>解析：${escapeHtml(explanation.title)}</strong></p>
+        <ul>
+          <li>${escapeHtml(explanation.why)}</li>
+        </ul>
+        <p><strong>考試小技巧：</strong>${escapeHtml(explanation.tip)}</p>
+      </div>
     `;
     els.wrongAnalysis.appendChild(card);
   });

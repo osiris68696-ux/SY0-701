@@ -1047,6 +1047,36 @@ body[data-mode="exam"] #english-source.visible {
   font-weight: 800;
 }
 
+.answer-box {
+  margin: 18px 0;
+  padding: 14px 16px;
+  border-left: 4px solid var(--green);
+  border-radius: 6px;
+  background: #f6fbf8;
+}
+
+.answer-box p {
+  margin: 7px 0;
+}
+
+.explanation-box {
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid #d6e2f5;
+  border-radius: 8px;
+  background: #fbfdff;
+  line-height: 1.75;
+}
+
+.explanation-box p {
+  margin: 0 0 10px;
+}
+
+.explanation-box ul {
+  margin: 0 0 12px 22px;
+  padding: 0;
+}
+
 .empty-analysis {
   border: 1px solid var(--line);
   border-radius: 8px;
