@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sy0-701-practice-state-v5";
+const STORAGE_KEY = "sy0-701-practice-state-v6";
 const questions = window.QUESTION_BANK || [];
 
 const uiText = {
@@ -454,6 +454,9 @@ function renderQuestion() {
   els.title.textContent = state.language === "zh" ? `第 ${state.index + 1} 題` : `Question #${state.index + 1}`;
   els.topic.textContent = `Topic ${q.topic} · ${q.multiSelect ? t("chooseMany") : t("chooseOne")}`;
   els.text.textContent = renderQuestionText(q.question);
+  els.text.style.fontWeight = "400";
+  els.text.style.fontSize = "17px";
+  els.text.style.lineHeight = "1.7";
   els.source.textContent = `${t("source")}: ${q.question}`;
   els.source.classList.toggle("visible", false);
   els.flag.textContent = "標記複查";
