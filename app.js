@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sy0-701-practice-state-v6";
+const STORAGE_KEY = "sy0-701-practice-state-v7";
 const questions = window.QUESTION_BANK || [];
 
 const uiText = {
