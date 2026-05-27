@@ -3,80 +3,178 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SY0-701 Interactive Practice</title>
+    <title>SY0-701 互動式考古題</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="app-shell">
-      <aside class="side-panel">
-        <div class="brand">
-          <img class="gengar" src="assets/gengar.gif" alt="Gengar" />
-          <div>
-            <p class="eyebrow">CompTIA Security+</p>
-            <h1>SY0-701 考古題</h1>
+    <header class="topbar">
+      <div>
+        <p>COMPTIA SECURITY+ FUNDAMENTALS</p>
+        <h1>SY0-701 互動式考古題</h1>
+      </div>
+      <nav aria-label="exam summary">
+        <span>題庫 611 題</span>
+        <span>Security+</span>
+        <span>及格 750</span>
+      </nav>
+    </header>
+
+    <main>
+      <section id="start-screen" class="start-card">
+        <div class="intro-panel">
+          <p class="exam-mode">EXAM MODE</p>
+          <h2>SY0-701 CompTIA Security+</h2>
+          <p class="lead">以正式考試節奏練習，交卷後可檢視錯題、正解與中英文對照。</p>
+
+          <div class="metric-row">
+            <div><strong id="setup-question-count">45</strong><span>預設題數</span></div>
+            <div><strong id="setup-time">60</strong><span>分鐘</span></div>
+            <div><strong>750</strong><span>及格分數</span></div>
+          </div>
+
+          <div class="scope-box">
+            <p><span class="dot red"></span>威脅、攻擊與弱點管理</p>
+            <p><span class="dot blue"></span>架構、安全營運與事件回應</p>
+            <p><span class="dot brown"></span>選擇題、複選題、模擬題複習</p>
+          </div>
+
+          <div class="mascot-row">
+            <article class="mascot pikachu-card">
+              <img src="assets/pikachu-transparent.gif" alt="Pikachu" />
+              <div>
+                <h3>皮卡丘 Pikachu</h3>
+                <p>快速暖身，準備放電作答。</p>
+              </div>
+            </article>
+            <article class="mascot gengar-card">
+              <img src="assets/gengar.gif" alt="Gengar" />
+              <div>
+                <h3>耿鬼 Gengar</h3>
+                <p>專門盯住錯題與觀念死角。</p>
+              </div>
+            </article>
           </div>
         </div>
 
-        <div class="stat-grid" aria-label="quiz statistics">
-          <div><strong id="stat-total">611</strong><span data-i18n="total">總題數</span></div>
-          <div><strong id="stat-done">0</strong><span data-i18n="done">已作答</span></div>
-          <div><strong id="stat-score">0%</strong><span data-i18n="score">正確率</span></div>
-          <div><strong id="stat-wrong">0</strong><span data-i18n="wrong">錯題</span></div>
-        </div>
+        <aside class="settings-panel">
+          <img class="float-pikachu" src="assets/pikachu-transparent.gif" alt="" />
+          <h2>考試設定</h2>
 
-        <div class="controls">
-          <div class="segmented" role="group" aria-label="language">
+          <label>
+            <span>題數</span>
+            <select id="question-count-select">
+              <option value="15">15 題</option>
+              <option value="45" selected>45 題</option>
+              <option value="90">90 題</option>
+              <option value="611">全部 611 題</option>
+            </select>
+          </label>
+
+          <label>
+            <span>時間</span>
+            <select id="time-select">
+              <option value="0">不限時間</option>
+              <option value="30">30 分鐘</option>
+              <option value="60" selected>60 分鐘</option>
+              <option value="90">90 分鐘</option>
+            </select>
+          </label>
+
+          <label>
+            <span>語言</span>
+            <select id="language-select">
+              <option value="zh" selected>中文題目</option>
+              <option value="en">English</option>
+            </select>
+          </label>
+
+          <label>
+            <span>範圍</span>
+            <select id="scope-select">
+              <option value="all" selected>全部範圍</option>
+              <option value="wrong">只練錯題</option>
+              <option value="flagged">只練收藏</option>
+            </select>
+          </label>
+
+          <label class="check-row">
+            <input id="randomize-select" type="checkbox" checked />
+            <span>隨機抽題</span>
+          </label>
+
+          <button id="start-button" class="start-button" type="button">開始作答</button>
+          <p class="hint">可依技能範圍集中練習，或使用全部範圍模擬正式考試。</p>
+        </aside>
+      </section>
+
+      <section id="exam-screen" class="exam-screen hidden">
+        <aside class="exam-side">
+          <div class="side-brand">
+            <img src="assets/gengar.gif" alt="Gengar" />
+            <div>
+              <p>COMPTIA SECURITY+</p>
+              <h2>SY0-701</h2>
+            </div>
+          </div>
+
+          <div class="exam-stats">
+            <div><strong id="stat-total">0</strong><span data-i18n="total">總題數</span></div>
+            <div><strong id="stat-done">0</strong><span data-i18n="done">已作答</span></div>
+            <div><strong id="stat-score">0%</strong><span data-i18n="score">正確率</span></div>
+            <div><strong id="stat-wrong">0</strong><span data-i18n="wrong">錯題</span></div>
+          </div>
+
+          <div class="side-actions">
             <button id="lang-zh" class="active" type="button">中文</button>
             <button id="lang-en" type="button">English</button>
-          </div>
-          <div class="segmented" role="group" aria-label="filter">
             <button data-filter="all" class="active" type="button" data-i18n="all">全部</button>
             <button data-filter="wrong" type="button" data-i18n="wrongOnly">錯題</button>
             <button data-filter="flagged" type="button" data-i18n="flagged">收藏</button>
+            <button id="back-to-setup" type="button">設定</button>
           </div>
-          <label class="search-box">
+
+          <label class="jump-box">
             <span data-i18n="jump">跳題</span>
             <input id="jump-input" type="number" min="1" max="611" placeholder="1-611" />
           </label>
-        </div>
 
-        <div id="question-list" class="question-list" aria-label="question list"></div>
-      </aside>
+          <div id="question-list" class="question-list" aria-label="question list"></div>
+        </aside>
 
-      <main class="quiz-panel">
-        <img class="pikachu" src="assets/pikachu-transparent.gif" alt="Pikachu" />
-        <section class="toolbar">
-          <div>
-            <p id="topic-label" class="eyebrow">Topic 1</p>
-            <h2 id="question-title">Question #1</h2>
+        <article class="question-card">
+          <img class="exam-pikachu" src="assets/pikachu-transparent.gif" alt="Pikachu" />
+          <header class="question-header">
+            <div>
+              <p id="topic-label">Topic 1</p>
+              <h2 id="question-title">第 1 題</h2>
+            </div>
+            <button id="flag-button" class="flag-button" type="button" title="收藏">☆</button>
+          </header>
+
+          <section class="question-copy">
+            <p id="question-text"></p>
+            <p id="english-source"></p>
+          </section>
+
+          <section id="options" class="options" aria-label="answer options"></section>
+          <section id="feedback" class="feedback" aria-live="polite"></section>
+
+          <div class="question-actions">
+            <button id="prev-button" type="button" data-i18n="prev">上一題</button>
+            <button id="check-button" class="primary" type="button" data-i18n="check">檢查答案</button>
+            <button id="reveal-button" type="button" data-i18n="reveal">顯示答案</button>
+            <button id="next-button" type="button" data-i18n="next">下一題</button>
+            <button id="random-button" type="button" data-i18n="random">隨機</button>
+            <button id="reset-button" class="danger" type="button" data-i18n="reset">重置</button>
           </div>
-          <button id="flag-button" class="icon-button" type="button" title="flag">☆</button>
-        </section>
 
-        <section class="question-block">
-          <p id="question-text"></p>
-          <p id="english-source" class="source-text"></p>
-        </section>
-
-        <section id="options" class="options" aria-label="answer options"></section>
-
-        <section id="feedback" class="feedback" aria-live="polite"></section>
-
-        <section class="actions">
-          <button id="prev-button" type="button" data-i18n="prev">上一題</button>
-          <button id="check-button" class="primary" type="button" data-i18n="check">檢查答案</button>
-          <button id="reveal-button" type="button" data-i18n="reveal">顯示答案</button>
-          <button id="next-button" type="button" data-i18n="next">下一題</button>
-          <button id="random-button" type="button" data-i18n="random">隨機</button>
-          <button id="reset-button" class="danger" type="button" data-i18n="reset">重置</button>
-        </section>
-
-        <footer>
-          <span data-i18n="reference">參考互動樣式</span>
-          <a href="https://osiris68696-ux.github.io/AI-900-interactive-practice/?restart=1779864898805" target="_blank" rel="noreferrer">AI-900 interactive practice</a>
-        </footer>
-      </main>
-    </div>
+          <footer>
+            <span data-i18n="reference">參考互動樣式</span>
+            <a href="https://osiris68696-ux.github.io/AI-900-interactive-practice/?restart=1779864898805" target="_blank" rel="noreferrer">AI-900 interactive practice</a>
+          </footer>
+        </article>
+      </section>
+    </main>
 
     <script src="questions.js"></script>
     <script src="app.js"></script>

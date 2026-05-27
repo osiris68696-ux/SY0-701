@@ -1,5 +1,5 @@
-const STORAGE_KEY = "sy0-701-practice-state-v1";
-const questions = window.QUESTION_BANK;
+const STORAGE_KEY = "sy0-701-practice-state-v2";
+const questions = window.QUESTION_BANK || [];
 
 const uiText = {
   zh: {
@@ -62,7 +62,6 @@ const glossary = new Map(Object.entries({
   "Account lockout": "帳號鎖定",
   "Active": "主動式",
   "Adaptive identity": "自適應身分",
-  "Air gap": "實體隔離",
   "Application": "應用程式",
   "Authentication": "驗證",
   "Authentication tokens": "驗證權杖",
@@ -93,7 +92,6 @@ const glossary = new Map(Object.entries({
   "Data masking": "資料遮罩",
   "Data processor": "資料處理者",
   "Data sovereignty": "資料主權",
-  "Defensive": "防禦型",
   "Digital forensics": "數位鑑識",
   "Disaster recovery plan": "災難復原計畫",
   "Disinformation": "假訊息",
@@ -104,7 +102,6 @@ const glossary = new Map(Object.entries({
   "Encryption": "加密",
   "Endpoint": "端點",
   "Espionage": "間諜活動",
-  "Firmware version": "韌體版本",
   "Firewall": "防火牆",
   "Full disk": "全磁碟",
   "Generator": "發電機",
@@ -113,9 +110,7 @@ const glossary = new Map(Object.entries({
   "Hash collision": "雜湊碰撞",
   "Hashing": "雜湊",
   "Hashing algorithm": "雜湊演算法",
-  "Heuristic": "啟發式",
   "Hot site": "熱備援站台",
-  "Hypervisor": "虛擬機器監視器",
   "Impersonation": "冒充",
   "Impossible travel": "不可能移動",
   "Incident response": "事件回應",
@@ -123,7 +118,6 @@ const glossary = new Map(Object.entries({
   "Insider threat": "內部威脅",
   "Intellectual property": "智慧財產",
   "Intrusion prevention system": "入侵防禦系統",
-  "IoT": "物聯網",
   "Jailbreaking": "越獄",
   "Jump server": "跳板伺服器",
   "Key stretching": "金鑰延展",
@@ -131,35 +125,26 @@ const glossary = new Map(Object.entries({
   "Load balancer": "負載平衡器",
   "Memory injection": "記憶體注入",
   "MFA": "多因素驗證",
-  "Misinformation": "錯誤資訊",
   "Multifactor authentication": "多因素驗證",
   "Nation-state": "國家級行為者",
-  "Network": "網路",
   "Network segmentation": "網路分段",
   "Non-repudiation": "不可否認性",
   "Obfuscation": "混淆",
-  "Offensive": "攻擊型",
-  "On-path attack": "路徑中攻擊",
   "Organized crime": "組織犯罪",
   "Password complexity": "密碼複雜度",
   "Password spraying": "密碼噴灑",
   "Password vaulting": "密碼保管庫",
-  "Passive": "被動式",
   "Patching": "修補",
   "Penetration testing": "滲透測試",
   "Permissions assignment": "權限指派",
   "Philosophical beliefs": "理念信念",
   "Phishing": "網路釣魚",
   "Pretexting": "藉口詐騙",
-  "Preparation": "準備",
   "Privacy": "隱私",
   "Proxy server": "代理伺服器",
-  "Quantitative": "定量",
-  "RADIUS": "RADIUS",
   "Recovery": "復原",
   "Red team": "紅隊",
   "Redundancy": "備援",
-  "Resource reuse": "資源重用",
   "Revenge": "報復",
   "Right-to-audit clause": "稽核權條款",
   "Risk analysis": "風險分析",
@@ -170,10 +155,9 @@ const glossary = new Map(Object.entries({
   "Rules of engagement": "交戰規則",
   "Salting": "加鹽",
   "Sandbox environment": "沙箱環境",
-  "SD-WAN": "軟體定義廣域網路",
   "Secure cookies": "安全 Cookie",
-  "Security guard": "保全人員",
   "Security awareness training": "資安意識訓練",
+  "Security guard": "保全人員",
   "SIEM": "安全資訊與事件管理",
   "Side loading": "側載",
   "Simulated phishing campaign": "模擬釣魚演練",
@@ -231,8 +215,18 @@ const phraseRules = [
 
 let state = loadState();
 let filter = "all";
+let activeQuestions = buildActiveQuestions();
 
 const els = {
+  startScreen: document.getElementById("start-screen"),
+  examScreen: document.getElementById("exam-screen"),
+  countSelect: document.getElementById("question-count-select"),
+  timeSelect: document.getElementById("time-select"),
+  langSelect: document.getElementById("language-select"),
+  scopeSelect: document.getElementById("scope-select"),
+  randomize: document.getElementById("randomize-select"),
+  setupCount: document.getElementById("setup-question-count"),
+  setupTime: document.getElementById("setup-time"),
   list: document.getElementById("question-list"),
   title: document.getElementById("question-title"),
   topic: document.getElementById("topic-label"),
@@ -249,7 +243,16 @@ const els = {
 };
 
 function loadState() {
-  const fallback = { index: 0, language: "zh", selected: {}, results: {}, flagged: [] };
+  const fallback = {
+    mode: "setup",
+    index: 0,
+    language: "zh",
+    selected: {},
+    results: {},
+    flagged: [],
+    examIds: questions.slice(0, 45).map((q) => q.id),
+    settings: { count: 45, time: 60, scope: "all", randomize: true },
+  };
   try {
     return { ...fallback, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") };
   } catch {
@@ -265,22 +268,53 @@ function t(key) {
   return uiText[state.language][key];
 }
 
+function shuffle(items) {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function buildActiveQuestions() {
+  const ids = new Set(state.examIds?.length ? state.examIds : questions.slice(0, 45).map((q) => q.id));
+  const selected = questions.filter((q) => ids.has(q.id));
+  return selected.length ? selected : questions.slice(0, 45);
+}
+
+function startExam() {
+  const settings = {
+    count: Number(els.countSelect.value),
+    time: Number(els.timeSelect.value),
+    scope: els.scopeSelect.value,
+    randomize: els.randomize.checked,
+  };
+  let pool = questions;
+  if (settings.scope === "wrong") {
+    pool = questions.filter((q) => state.results[q.id] === false);
+  } else if (settings.scope === "flagged") {
+    pool = questions.filter((q) => state.flagged.includes(q.id));
+  }
+  if (!pool.length) pool = questions;
+  const picked = settings.randomize ? shuffle(pool).slice(0, settings.count) : pool.slice(0, settings.count);
+
+  state.mode = "exam";
+  state.index = 0;
+  state.language = els.langSelect.value;
+  state.settings = settings;
+  state.examIds = picked.map((q) => q.id);
+  activeQuestions = buildActiveQuestions();
+  saveState();
+  render();
+}
+
 function arraysEqual(a, b) {
   return [...a].sort().join("") === [...b].sort().join("");
 }
 
 function selectedFor(id) {
   return state.selected[id] || [];
-}
-
-function renderOptionText(text) {
-  if (state.language === "en") return text;
-  const exact = glossary.get(text);
-  if (exact) return `${exact} (${text})`;
-  const normalized = text.replace(/\.$/, "");
-  const normalizedMatch = glossary.get(normalized);
-  if (normalizedMatch) return `${normalizedMatch} (${text})`;
-  return `${applyPhraseRules(text)} (${text})`;
 }
 
 function applyPhraseRules(text) {
@@ -291,9 +325,26 @@ function applyPhraseRules(text) {
   return output;
 }
 
+function renderOptionText(text) {
+  if (state.language === "en") return text;
+  const normalized = text.replace(/\.$/, "");
+  const translated = glossary.get(text) || glossary.get(normalized) || applyPhraseRules(text);
+  return `${translated} (${text})`;
+}
+
 function renderQuestionText(question) {
-  if (state.language === "en") return question;
-  return applyPhraseRules(question);
+  return state.language === "en" ? question : applyPhraseRules(question);
+}
+
+function syncSetupControls() {
+  const settings = state.settings || {};
+  els.countSelect.value = String(settings.count || 45);
+  els.timeSelect.value = String(settings.time ?? 60);
+  els.langSelect.value = state.language || "zh";
+  els.scopeSelect.value = settings.scope || "all";
+  els.randomize.checked = settings.randomize !== false;
+  els.setupCount.textContent = els.countSelect.value;
+  els.setupTime.textContent = els.timeSelect.value === "0" ? "∞" : els.timeSelect.value;
 }
 
 function updateLanguage() {
@@ -306,36 +357,43 @@ function updateLanguage() {
 }
 
 function renderStats() {
-  const answered = Object.keys(state.results).length;
-  const correct = Object.values(state.results).filter(Boolean).length;
-  const wrong = Object.values(state.results).filter((value) => value === false).length;
-  els.statTotal.textContent = questions.length;
+  const ids = new Set(activeQuestions.map((q) => q.id));
+  const relevantResults = Object.entries(state.results).filter(([id]) => ids.has(Number(id)));
+  const answered = relevantResults.length;
+  const correct = relevantResults.filter(([, value]) => value === true).length;
+  const wrong = relevantResults.filter(([, value]) => value === false).length;
+  els.statTotal.textContent = activeQuestions.length;
   els.statDone.textContent = answered;
   els.statScore.textContent = answered ? `${Math.round((correct / answered) * 100)}%` : "0%";
   els.statWrong.textContent = wrong;
 }
 
 function filteredQuestions() {
-  if (filter === "wrong") return questions.filter((q) => state.results[q.id] === false);
-  if (filter === "flagged") return questions.filter((q) => state.flagged.includes(q.id));
-  return questions;
+  if (filter === "wrong") return activeQuestions.filter((q) => state.results[q.id] === false);
+  if (filter === "flagged") return activeQuestions.filter((q) => state.flagged.includes(q.id));
+  return activeQuestions;
+}
+
+function currentQuestion() {
+  if (state.index >= activeQuestions.length) state.index = Math.max(activeQuestions.length - 1, 0);
+  return activeQuestions[state.index] || questions[0];
 }
 
 function renderList() {
-  const visible = filteredQuestions();
+  const qNow = currentQuestion();
   els.list.innerHTML = "";
-  visible.forEach((q) => {
+  filteredQuestions().forEach((q) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "q-chip";
     button.textContent = q.id;
-    button.classList.toggle("current", questions[state.index].id === q.id);
+    button.classList.toggle("current", qNow.id === q.id);
     button.classList.toggle("correct", state.results[q.id] === true);
     button.classList.toggle("wrong", state.results[q.id] === false);
     button.classList.toggle("flagged", state.flagged.includes(q.id));
     button.classList.toggle("unsupported", q.unsupported);
     button.addEventListener("click", () => {
-      state.index = questions.findIndex((item) => item.id === q.id);
+      state.index = activeQuestions.findIndex((item) => item.id === q.id);
       saveState();
       render();
     });
@@ -343,8 +401,16 @@ function renderList() {
   });
 }
 
+function answerText(q) {
+  const parts = q.answer.map((label) => {
+    const option = q.options.find((item) => item.label === label);
+    return option ? `${label}. ${renderOptionText(option.text)}` : label;
+  });
+  return `${t("answerIs")}: ${parts.join(" / ")}`;
+}
+
 function renderQuestion() {
-  const q = questions[state.index];
+  const q = currentQuestion();
   const selected = selectedFor(q.id);
   const result = state.results[q.id];
 
@@ -386,17 +452,9 @@ function renderQuestion() {
   }
 
   document.getElementById("prev-button").disabled = state.index === 0;
-  document.getElementById("next-button").disabled = state.index === questions.length - 1;
+  document.getElementById("next-button").disabled = state.index === activeQuestions.length - 1;
   document.getElementById("check-button").disabled = q.unsupported;
   document.getElementById("reveal-button").disabled = q.unsupported;
-}
-
-function answerText(q) {
-  const parts = q.answer.map((label) => {
-    const option = q.options.find((item) => item.label === label);
-    return option ? `${label}. ${renderOptionText(option.text)}` : label;
-  });
-  return `${t("answerIs")}: ${parts.join(" / ")}`;
 }
 
 function selectOption(q, label) {
@@ -415,7 +473,7 @@ function selectOption(q, label) {
 }
 
 function checkCurrent() {
-  const q = questions[state.index];
+  const q = currentQuestion();
   if (q.unsupported) return;
   const selected = selectedFor(q.id);
   if (!selected.length) {
@@ -429,7 +487,7 @@ function checkCurrent() {
 }
 
 function revealCurrent() {
-  const q = questions[state.index];
+  const q = currentQuestion();
   if (q.unsupported) return;
   state.selected[q.id] = [...q.answer];
   state.results[q.id] = true;
@@ -438,17 +496,39 @@ function revealCurrent() {
 }
 
 function move(delta) {
-  state.index = Math.min(Math.max(state.index + delta, 0), questions.length - 1);
+  state.index = Math.min(Math.max(state.index + delta, 0), activeQuestions.length - 1);
   saveState();
   render();
 }
 
 function render() {
+  activeQuestions = buildActiveQuestions();
+  syncSetupControls();
+  const inExam = state.mode === "exam";
+  els.startScreen.classList.toggle("hidden", inExam);
+  els.examScreen.classList.toggle("hidden", !inExam);
+  if (!inExam) return;
   updateLanguage();
   renderStats();
   renderList();
   renderQuestion();
 }
+
+document.getElementById("start-button").addEventListener("click", startExam);
+document.getElementById("back-to-setup").addEventListener("click", () => {
+  state.mode = "setup";
+  saveState();
+  render();
+});
+
+[els.countSelect, els.timeSelect].forEach((select) => {
+  select.addEventListener("change", syncSetupControls);
+});
+
+els.langSelect.addEventListener("change", () => {
+  state.language = els.langSelect.value;
+  saveState();
+});
 
 document.getElementById("lang-zh").addEventListener("click", () => {
   state.language = "zh";
@@ -465,14 +545,16 @@ document.getElementById("lang-en").addEventListener("click", () => {
 document.querySelectorAll("[data-filter]").forEach((button) => {
   button.addEventListener("click", () => {
     filter = button.dataset.filter;
-    document.querySelectorAll("[data-filter]").forEach((node) => node.classList.toggle("active", node === button));
+    document.querySelectorAll("[data-filter]").forEach((node) => {
+      node.classList.toggle("active", node === button);
+    });
     renderList();
   });
 });
 
 els.jump.addEventListener("change", () => {
   const id = Number(els.jump.value);
-  const index = questions.findIndex((q) => q.id === id);
+  const index = activeQuestions.findIndex((q) => q.id === id);
   if (index >= 0) {
     state.index = index;
     els.jump.value = "";
@@ -482,7 +564,7 @@ els.jump.addEventListener("change", () => {
 });
 
 els.flag.addEventListener("click", () => {
-  const id = questions[state.index].id;
+  const id = currentQuestion().id;
   state.flagged = state.flagged.includes(id)
     ? state.flagged.filter((item) => item !== id)
     : [...state.flagged, id];
@@ -495,19 +577,21 @@ document.getElementById("reveal-button").addEventListener("click", revealCurrent
 document.getElementById("prev-button").addEventListener("click", () => move(-1));
 document.getElementById("next-button").addEventListener("click", () => move(1));
 document.getElementById("random-button").addEventListener("click", () => {
-  state.index = Math.floor(Math.random() * questions.length);
+  state.index = Math.floor(Math.random() * activeQuestions.length);
   saveState();
   render();
 });
 document.getElementById("reset-button").addEventListener("click", () => {
-  state = { index: 0, language: state.language, selected: {}, results: {}, flagged: [] };
+  state.selected = {};
+  state.results = {};
+  state.index = 0;
   saveState();
   render();
 });
 
 document.addEventListener("keydown", (event) => {
-  if (event.target instanceof HTMLInputElement) return;
-  const q = questions[state.index];
+  if (state.mode !== "exam" || event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement) return;
+  const q = currentQuestion();
   const key = event.key.toUpperCase();
   if (["A", "B", "C", "D", "E", "F", "G", "H"].includes(key)) {
     const option = q.options.find((item) => item.label === key);

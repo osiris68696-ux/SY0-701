@@ -1,6 +1,6 @@
 # SY0-701 Interactive Practice
 
-Open `index.html` directly in a browser to use the quiz.
+Open `index.html` directly in a browser to use the quiz, or upload these files to a GitHub Pages repository.
 
 ## Included
 
@@ -10,6 +10,7 @@ Open `index.html` directly in a browser to use the quiz.
 - Chinese/English language toggle
 - Chinese answer choices include the English term in parentheses
 - Transparent-background Pikachu GIF and Gengar GIF assets
+- AI-900-style exam setup screen
 - Progress, score, wrong-question filter, flagged-question filter, random question, reveal answer, keyboard shortcuts
 
 ## Keyboard
