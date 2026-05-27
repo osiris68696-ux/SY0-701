@@ -114,7 +114,7 @@
             <div class="pill" id="progress-time">剩餘 60:00</div>
             <div class="exam-top-actions">
               <button id="flag-button" type="button">標記複查</button>
-              <button id="submit-button" class="submit-button" type="button">交卷</button>
+              <button id="submit-button" class="submit-button" type="button" onclick="window.submitExam && window.submitExam()">交卷</button>
             </div>
           </header>
 
@@ -160,7 +160,6 @@
 
       <section id="result-screen" class="result-screen hidden">
         <div class="score-report">
-          <img class="result-pikachu" src="assets/pikachu-transparent.gif" alt="" />
           <header>
             <div>
               <h2>CompTIA Security+ Score Report</h2>

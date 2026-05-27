@@ -793,7 +793,14 @@ body[data-mode="result"] main {
   color: var(--ink);
   font-size: 17px;
   line-height: 1.7;
-  font-weight: 650;
+  font-weight: 400;
+}
+
+body[data-mode="exam"] #question-text,
+body[data-mode="result"] #question-text {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.7;
 }
 
 .english-source {
@@ -916,14 +923,6 @@ body[data-mode="exam"] #english-source.visible {
 .score-report {
   position: relative;
   overflow: hidden;
-}
-
-.result-pikachu {
-  position: absolute;
-  top: -28px;
-  left: 370px;
-  width: 90px;
-  image-rendering: pixelated;
 }
 
 .score-report header {

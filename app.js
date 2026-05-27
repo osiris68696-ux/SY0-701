@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sy0-701-practice-state-v4";
+const STORAGE_KEY = "sy0-701-practice-state-v5";
 const questions = window.QUESTION_BANK || [];
 
 const uiText = {
@@ -546,6 +546,15 @@ function gradeExam() {
   });
 }
 
+function submitExam() {
+  gradeExam();
+  state.mode = "result";
+  saveState();
+  render();
+}
+
+window.submitExam = submitExam;
+
 function renderResult() {
   const gradable = activeQuestions.filter((q) => !q.unsupported);
   const correct = gradable.filter((q) => state.results[q.id] === true).length;
@@ -676,12 +685,7 @@ document.getElementById("reset-button").addEventListener("click", () => {
   saveState();
   render();
 });
-document.getElementById("submit-button").addEventListener("click", () => {
-  gradeExam();
-  state.mode = "result";
-  saveState();
-  render();
-});
+document.getElementById("submit-button").addEventListener("click", submitExam);
 document.getElementById("restart-button").addEventListener("click", () => {
   state.selected = {};
   state.results = {};
