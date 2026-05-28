@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sy0-701-practice-state-v15";
+const STORAGE_KEY = "sy0-701-practice-state-v17";
 const EXAM_PASSWORD = "01156688@";
 const questions = window.QUESTION_BANK || [];
 
@@ -289,8 +289,8 @@ function loadState() {
     selected: {},
     results: {},
     flagged: [],
-    examIds: questions.slice(0, 45).map((q) => q.id),
-    settings: { count: 45, time: 60, scope: "all", randomize: false },
+    examIds: questions.slice(0, 90).map((q) => q.id),
+    settings: { count: "random75-90", actualCount: 90, time: 90, scope: "all", randomize: false },
     examEndsAt: null,
   };
   try {
@@ -357,8 +357,11 @@ function startExam() {
     openPasswordModal();
     return;
   }
+  const countValue = els.countSelect.value;
+  const pickedCount = countValue === "random75-90" ? 75 + Math.floor(Math.random() * 16) : Number(countValue);
   const settings = {
-    count: Number(els.countSelect.value),
+    count: countValue,
+    actualCount: pickedCount,
     time: Number(els.timeSelect.value),
     scope: els.scopeSelect.value,
     randomize: els.randomize.checked,
@@ -370,7 +373,7 @@ function startExam() {
     pool = questions.filter((q) => state.flagged.includes(q.id));
   }
   if (!pool.length) pool = questions;
-  const picked = settings.randomize ? shuffle(pool).slice(0, settings.count) : pool.slice(0, settings.count);
+  const picked = settings.randomize ? shuffle(pool).slice(0, settings.actualCount) : pool.slice(0, settings.actualCount);
 
   state.mode = "exam";
   state.index = 0;
@@ -428,12 +431,12 @@ function translateText(text) {
 
 function syncSetupControls() {
   const settings = state.settings || {};
-  els.countSelect.value = String(settings.count || 45);
-  els.timeSelect.value = String(settings.time ?? 60);
+  els.countSelect.value = String(settings.count || "random75-90");
+  els.timeSelect.value = String(settings.time ?? 90);
   els.langSelect.value = state.language || "zh";
   els.scopeSelect.value = settings.scope || "all";
   els.randomize.checked = settings.randomize === true;
-  els.setupCount.textContent = els.countSelect.value;
+  els.setupCount.textContent = els.countSelect.value === "random75-90" ? "75-90" : els.countSelect.value;
   els.setupTime.textContent = els.timeSelect.value === "0" ? "∞" : els.timeSelect.value;
   updateLockControls();
 }
