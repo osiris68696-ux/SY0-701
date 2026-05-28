@@ -1081,6 +1081,31 @@ body[data-mode="result"] img {
   padding: 0;
 }
 
+.analysis-option-list {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 14px 22px;
+  padding: 0;
+}
+
+.analysis-option-list li {
+  padding-left: 2px;
+}
+
+.analysis-option-list li.correct strong {
+  color: #087a3f;
+}
+
+.analysis-option-list li.chosen-wrong strong {
+  color: #c7352c;
+}
+
+.analysis-option-list span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+}
+
 .all-options-box {
   margin-top: 14px;
   padding: 16px;

@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sy0-701-practice-state-v10";
+const STORAGE_KEY = "sy0-701-practice-state-v11";
 const questions = window.QUESTION_BANK || [];
 
 const uiText = {
@@ -467,6 +467,13 @@ function optionDisplay(q, labels) {
   }).join(" / ");
 }
 
+function correctAnswerLines(q) {
+  return q.answer.map((label) => {
+    const option = q.options.find((item) => item.label === label);
+    return option ? `<p>${escapeHtml(label)}. ${escapeHtml(renderOptionText(option.text))}</p>` : `<p>${escapeHtml(label)}</p>`;
+  }).join("");
+}
+
 function explainQuestion(q) {
   const answerOptions = q.answer
     .map((label) => q.options.find((option) => option.label === label)?.text || "")
@@ -701,13 +708,24 @@ function explainOption(optionText, isCorrect, q) {
     [/recovery/, ["Recovery 復原", "用途是在威脅移除後恢復系統與服務到正常狀態。"]],
   ];
 
-  const matched = conceptRules.find(([pattern]) => pattern.test.test(text));
+  const matched = conceptRules.find(([pattern]) => pattern.test(text));
   const title = matched ? matched[1][0] : `${optionText}`;
   const usage = matched ? matched[1][1] : `用途要依題目情境判斷。這個選項代表一種控制、流程、攻擊類型或治理文件；作答時要確認它是否直接滿足題目問的需求。`;
   const verdict = isCorrect
     ? "本題選它，因為它最直接符合題目中的關鍵條件。"
     : "本題不選它，因為它雖然可能是相關資安概念，但不是題目情境中最直接或最精準的答案。";
   return { title, usage, verdict };
+}
+
+function referenceText(q) {
+  const joined = `${q.question} ${q.options.map((option) => option.text).join(" ")}`.toLowerCase();
+  if (/crypt|hash|salt|encrypt|signature|certificate|pki/.test(joined)) return "參考資料：CompTIA Security+ SY0-701 - Cryptography and PKI concepts。";
+  if (/phishing|smishing|vishing|impersonation|pretexting|social engineering/.test(joined)) return "參考資料：CompTIA Security+ SY0-701 - Social engineering and attack types。";
+  if (/risk|insurance|register|accept|transfer|mitigate|avoid/.test(joined)) return "參考資料：CompTIA Security+ SY0-701 - Risk management concepts。";
+  if (/incident|containment|eradication|recovery|forensic|malware/.test(joined)) return "參考資料：CompTIA Security+ SY0-701 - Incident response process。";
+  if (/cloud|saas|iaas|shared responsibility|casb/.test(joined)) return "參考資料：CompTIA Security+ SY0-701 - Cloud and shared responsibility model。";
+  if (/vulnerab|cvss|patch|scan|remediation/.test(joined)) return "參考資料：CompTIA Security+ SY0-701 - Vulnerability management。";
+  return "參考資料：CompTIA Security+ SY0-701 Exam Objectives。";
 }
 
 function renderQuestion() {
@@ -885,19 +903,19 @@ function renderResult() {
 
   wrongItems.forEach((q) => {
     const sequence = activeQuestions.findIndex((item) => item.id === q.id) + 1;
-    const explanation = explainQuestion(q);
     const selected = selectedFor(q.id);
     const optionExplanations = q.options.map((option) => {
       const detail = explainOption(option.text, q.answer.includes(option.label), q);
       const status = q.answer.includes(option.label) ? "correct" : selected.includes(option.label) ? "chosen-wrong" : "neutral";
       return `
-        <li class="option-explanation ${status}">
-          <h4>${escapeHtml(option.label)}. ${escapeHtml(renderOptionText(option.text))}</h4>
-          <p><strong>用途：</strong>${escapeHtml(detail.usage)}</p>
-          <p><strong>本題判斷：</strong>${escapeHtml(detail.verdict)}</p>
+        <li class="${status}">
+          <strong>${escapeHtml(option.label)}. ${escapeHtml(detail.title)}：</strong>
+          ${escapeHtml(detail.usage)}
+          <span>${escapeHtml(detail.verdict)}</span>
         </li>
       `;
     }).join("");
+    const explanation = explainQuestion(q);
     const card = document.createElement("article");
     card.className = "analysis-card";
     card.innerHTML = `
@@ -906,19 +924,15 @@ function renderResult() {
       <p>${escapeHtml(q.question)}</p>
       <div class="answer-box">
         <p><strong>你的答案：</strong>${escapeHtml(optionDisplay(q, selected))}</p>
-        <p><strong>${escapeHtml(answerText(q))}</strong></p>
+        <p><strong>答案：</strong></p>
+        ${correctAnswerLines(q)}
       </div>
       <div class="explanation-box">
-        <p><strong>解析：${escapeHtml(explanation.title)}</strong></p>
-        <ul>
-          <li>${escapeHtml(explanation.why)}</li>
-        </ul>
+        <p><strong>解析：</strong></p>
+        <ul class="analysis-option-list">${optionExplanations}</ul>
         <p><strong>考試小技巧：</strong>${escapeHtml(explanation.tip)}</p>
-        <p><strong>判斷方式：</strong>先找題目中的關鍵字，再對應到最能降低風險或最符合情境的控制、流程或攻擊類型。</p>
-      </div>
-      <div class="all-options-box">
-        <p><strong>每個答案用途說明：</strong></p>
-        <ul>${optionExplanations}</ul>
+        <p><strong>判斷方式：</strong>${escapeHtml(explanation.why)}</p>
+        <p>${escapeHtml(referenceText(q))}</p>
       </div>
     `;
     els.wrongAnalysis.appendChild(card);
