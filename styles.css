@@ -314,28 +314,17 @@ footer {
 }
 
 .start-button.locked {
-  cursor: not-allowed;
-  border-color: #b8c8ee;
-  border-bottom-color: #9fb4e7;
-  background: #e9efff;
-  color: #65738d;
-}
-
-.unlock-button {
-  width: 100%;
   min-height: 32px;
-  margin-top: 4px;
-  border: 1px solid #b8c8ff;
+  margin-top: 18px;
+  cursor: pointer;
+  border-color: #b8c8ee;
+  border-bottom: 1px solid #b8c8ee;
   border-radius: 7px;
   background: #e9efff;
   color: #4f46e5;
+  box-shadow: none;
   font-weight: 800;
-}
-
-.unlock-button.unlocked {
-  border-color: #8ad3a7;
-  background: #f1fbf5;
-  color: #087a3f;
+  font-size: 14px;
 }
 
 .password-modal {

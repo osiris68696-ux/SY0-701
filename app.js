@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sy0-701-practice-state-v14";
+const STORAGE_KEY = "sy0-701-practice-state-v15";
 const EXAM_PASSWORD = "01156688@";
 const questions = window.QUESTION_BANK || [];
 
@@ -247,7 +247,6 @@ const els = {
   langSelect: document.getElementById("language-select"),
   scopeSelect: document.getElementById("scope-select"),
   randomize: document.getElementById("randomize-select"),
-  unlock: document.getElementById("unlock-button"),
   passwordModal: document.getElementById("password-modal"),
   passwordInput: document.getElementById("password-input"),
   passwordError: document.getElementById("password-error"),
@@ -325,10 +324,8 @@ function buildActiveQuestions() {
 }
 
 function updateLockControls() {
-  els.startButton.disabled = !examUnlocked;
   els.startButton.classList.toggle("locked", !examUnlocked);
-  els.unlock.textContent = examUnlocked ? "已解鎖，可以開始作答" : "🔒 點擊解鎖（隨機派題）";
-  els.unlock.classList.toggle("unlocked", examUnlocked);
+  els.startButton.textContent = examUnlocked ? "開始作答" : "🔒 點擊解鎖（隨機派題）";
 }
 
 function openPasswordModal() {
@@ -1020,7 +1017,6 @@ function render() {
 }
 
 document.getElementById("start-button").addEventListener("click", startExam);
-els.unlock.addEventListener("click", openPasswordModal);
 els.passwordCancel.addEventListener("click", closePasswordModal);
 els.passwordSubmit.addEventListener("click", verifyPassword);
 els.passwordInput.addEventListener("keydown", (event) => {
