@@ -313,6 +313,124 @@ footer {
   font-size: 17px;
 }
 
+.start-button.locked {
+  cursor: not-allowed;
+  border-color: #b8c8ee;
+  border-bottom-color: #9fb4e7;
+  background: #e9efff;
+  color: #65738d;
+}
+
+.unlock-button {
+  width: 100%;
+  min-height: 32px;
+  margin-top: 4px;
+  border: 1px solid #b8c8ff;
+  border-radius: 7px;
+  background: #e9efff;
+  color: #4f46e5;
+  font-weight: 800;
+}
+
+.unlock-button.unlocked {
+  border-color: #8ad3a7;
+  background: #f1fbf5;
+  color: #087a3f;
+}
+
+.password-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(13, 23, 43, 0.42);
+}
+
+.password-modal.hidden {
+  display: none;
+}
+
+.password-card {
+  width: min(380px, 100%);
+  padding: 28px 30px 32px;
+  border-radius: 0 0 14px 14px;
+  border-top: 3px solid #5a49f2;
+  background: #fff;
+  box-shadow: 0 22px 58px rgba(15, 23, 42, 0.24);
+  text-align: center;
+}
+
+.lock-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: #eef1ff;
+  color: #4f46e5;
+  font-size: 30px;
+}
+
+.password-card h2 {
+  margin: 0 0 8px;
+  color: #202633;
+  font-size: 24px;
+}
+
+.password-card p {
+  margin: 0 0 20px;
+  color: #6b7588;
+  font-weight: 700;
+}
+
+#password-input {
+  width: 100%;
+  height: 46px;
+  border: 0;
+  border-bottom: 2px solid #5a49f2;
+  text-align: center;
+  font-size: 24px;
+  letter-spacing: 6px;
+  outline: none;
+}
+
+.password-error {
+  min-height: 22px;
+  margin-top: 8px;
+  color: var(--red);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.password-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.password-actions button {
+  min-height: 48px;
+  border: 0;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+#password-cancel {
+  background: #f2f3f7;
+  color: #4b5563;
+}
+
+#password-submit {
+  background: #5446e8;
+  color: #fff;
+  box-shadow: 0 5px 12px rgba(79, 70, 229, 0.28);
+}
+
 .hint {
   margin: 14px 0 0;
   font-size: 14px;
@@ -867,7 +985,11 @@ body[data-mode="result"] .exam-feedback {
 }
 
 body[data-mode="exam"] #english-source.visible {
-  display: none;
+  display: block;
+  margin: 12px 0 18px;
+  color: #566783;
+  font-size: 15px;
+  line-height: 1.55;
 }
 
 .exam-bottom-actions {

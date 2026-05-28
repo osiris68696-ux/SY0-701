@@ -1,4 +1,5 @@
-const STORAGE_KEY = "sy0-701-practice-state-v11";
+const STORAGE_KEY = "sy0-701-practice-state-v14";
+const EXAM_PASSWORD = "01156688@";
 const questions = window.QUESTION_BANK || [];
 
 const uiText = {
@@ -234,6 +235,7 @@ let state = loadState();
 let filter = "all";
 let activeQuestions = buildActiveQuestions();
 let timerInterval = null;
+let examUnlocked = false;
 state.mode = "setup";
 
 const els = {
@@ -245,6 +247,13 @@ const els = {
   langSelect: document.getElementById("language-select"),
   scopeSelect: document.getElementById("scope-select"),
   randomize: document.getElementById("randomize-select"),
+  unlock: document.getElementById("unlock-button"),
+  passwordModal: document.getElementById("password-modal"),
+  passwordInput: document.getElementById("password-input"),
+  passwordError: document.getElementById("password-error"),
+  passwordCancel: document.getElementById("password-cancel"),
+  passwordSubmit: document.getElementById("password-submit"),
+  startButton: document.getElementById("start-button"),
   setupCount: document.getElementById("setup-question-count"),
   setupTime: document.getElementById("setup-time"),
   list: document.getElementById("question-list"),
@@ -315,7 +324,42 @@ function buildActiveQuestions() {
   return selected.length ? selected : questions.slice(0, 45);
 }
 
+function updateLockControls() {
+  els.startButton.disabled = !examUnlocked;
+  els.startButton.classList.toggle("locked", !examUnlocked);
+  els.unlock.textContent = examUnlocked ? "已解鎖，可以開始作答" : "🔒 點擊解鎖（隨機派題）";
+  els.unlock.classList.toggle("unlocked", examUnlocked);
+}
+
+function openPasswordModal() {
+  els.passwordModal.classList.remove("hidden");
+  els.passwordInput.value = "";
+  els.passwordError.textContent = "";
+  setTimeout(() => els.passwordInput.focus(), 0);
+}
+
+function closePasswordModal() {
+  els.passwordModal.classList.add("hidden");
+  els.passwordInput.value = "";
+  els.passwordError.textContent = "";
+}
+
+function verifyPassword() {
+  if (els.passwordInput.value === EXAM_PASSWORD) {
+    examUnlocked = true;
+    closePasswordModal();
+    updateLockControls();
+    return;
+  }
+  els.passwordError.textContent = "密碼錯誤，請重新輸入。";
+  els.passwordInput.select();
+}
+
 function startExam() {
+  if (!examUnlocked) {
+    openPasswordModal();
+    return;
+  }
   const settings = {
     count: Number(els.countSelect.value),
     time: Number(els.timeSelect.value),
@@ -361,13 +405,28 @@ function applyPhraseRules(text) {
 
 function renderOptionText(text) {
   if (state.language === "en") return text;
-  const normalized = text.replace(/\.$/, "");
-  const translated = glossary.get(text) || glossary.get(normalized);
-  return translated ? `${translated} (${text})` : text;
+  const translated = translateText(text);
+  return translated === text ? text : `${translated} (${text})`;
 }
 
 function renderQuestionText(question) {
-  return question;
+  return state.language === "zh" ? translateText(question) : question;
+}
+
+function translateText(text) {
+  let translated = text;
+  phraseRules.forEach(([pattern, replacement]) => {
+    translated = translated.replace(pattern, replacement);
+  });
+
+  const terms = [...glossary.entries()].sort((a, b) => b[0].length - a[0].length);
+  terms.forEach(([term, zh]) => {
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const pattern = new RegExp(`(^|[^A-Za-z0-9-])(${escaped})(?=$|[^A-Za-z0-9-])`, "gi");
+    translated = translated.replace(pattern, (match, prefix, original) => `${prefix}${zh}`);
+  });
+
+  return translated;
 }
 
 function syncSetupControls() {
@@ -379,6 +438,7 @@ function syncSetupControls() {
   els.randomize.checked = settings.randomize === true;
   els.setupCount.textContent = els.countSelect.value;
   els.setupTime.textContent = els.timeSelect.value === "0" ? "∞" : els.timeSelect.value;
+  updateLockControls();
 }
 
 function updateLanguage() {
@@ -739,8 +799,8 @@ function renderQuestion() {
   els.text.style.fontWeight = "400";
   els.text.style.fontSize = "17px";
   els.text.style.lineHeight = "1.7";
-  els.source.textContent = `${t("source")}: ${q.question}`;
-  els.source.classList.toggle("visible", false);
+  els.source.textContent = state.language === "zh" ? `英文原題：${q.question}` : "";
+  els.source.classList.toggle("visible", state.language === "zh");
   els.flag.textContent = "標記複查";
   els.flag.classList.toggle("marked", state.flagged.includes(q.id));
   els.options.innerHTML = "";
@@ -960,6 +1020,16 @@ function render() {
 }
 
 document.getElementById("start-button").addEventListener("click", startExam);
+els.unlock.addEventListener("click", openPasswordModal);
+els.passwordCancel.addEventListener("click", closePasswordModal);
+els.passwordSubmit.addEventListener("click", verifyPassword);
+els.passwordInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") verifyPassword();
+  if (event.key === "Escape") closePasswordModal();
+});
+els.passwordModal.addEventListener("click", (event) => {
+  if (event.target === els.passwordModal) closePasswordModal();
+});
 document.getElementById("back-to-setup").addEventListener("click", () => {
   stopTimer();
   state.mode = "setup";

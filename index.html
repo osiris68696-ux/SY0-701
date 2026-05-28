@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>SY0-701 互動式考古題</title>
-    <link rel="stylesheet" href="styles.css?v=ai900-option-analysis" />
+    <link rel="stylesheet" href="styles.css?v=locked-bilingual-v14" />
   </head>
   <body>
     <header class="topbar">
@@ -82,8 +82,8 @@
           <label>
             <span>語言</span>
             <select id="language-select">
-              <option value="zh" selected>中文題目</option>
-              <option value="en">English</option>
+              <option value="zh" selected>中文翻譯 + 英文原文</option>
+              <option value="en">English original only</option>
             </select>
           </label>
 
@@ -101,7 +101,8 @@
             <span>隨機抽題</span>
           </label>
 
-          <button id="start-button" class="start-button" type="button">開始作答</button>
+          <button id="unlock-button" class="unlock-button" type="button">🔒 點擊解鎖（隨機派題）</button>
+          <button id="start-button" class="start-button locked" type="button" disabled>開始作答</button>
           <p class="hint">可依技能範圍集中練習，或使用全部範圍模擬正式考試。</p>
         </aside>
       </section>
@@ -190,7 +191,21 @@
       </section>
     </main>
 
-    <script src="questions.js?v=ai900-option-analysis"></script>
-    <script src="app.js?v=ai900-option-analysis"></script>
+    <div id="password-modal" class="password-modal hidden" role="dialog" aria-modal="true" aria-labelledby="password-title">
+      <div class="password-card">
+        <div class="lock-icon" aria-hidden="true">🔒</div>
+        <h2 id="password-title">系統存取驗證</h2>
+        <p>請輸入 9 位數專屬密碼解鎖考場</p>
+        <input id="password-input" type="password" maxlength="9" autocomplete="off" inputmode="text" aria-label="解鎖密碼" />
+        <div id="password-error" class="password-error" aria-live="polite"></div>
+        <div class="password-actions">
+          <button id="password-cancel" type="button">取消</button>
+          <button id="password-submit" type="button">解鎖進入</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="questions.js?v=locked-bilingual-v14"></script>
+    <script src="app.js?v=locked-bilingual-v14"></script>
   </body>
 </html>
