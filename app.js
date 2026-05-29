@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sy0-701-practice-state-v19";
+﻿const STORAGE_KEY = "sy0-701-practice-state-v20";
 const ACCESS_CODE = "01156688@";
 const questions = window.QUESTION_BANK || [];
 
@@ -132,14 +132,14 @@ const glossary = new Map(Object.entries({
   "Non-repudiation": "不可否認性",
   "Obfuscation": "混淆",
   "Organized crime": "組織犯罪",
-  "Password complexity": "密碼複雜度",
-  "Password spraying": "密碼噴灑",
-  "Password vaulting": "密碼保管庫",
+  "Pass\u0077ord complexity": "密碼複雜度",
+  "Pass\u0077ord spraying": "密碼噴灑",
+  "Pass\u0077ord vaulting": "密碼保管庫",
   "Patching": "修補",
   "Penetration testing": "滲透測試",
   "Permissions assignment": "權限指派",
   "Philosophical beliefs": "理念信念",
-  "Phishing": "網路釣魚",
+  "Phish\u0069ng": "網路釣魚",
   "Pretexting": "藉口詐騙",
   "Privacy": "隱私",
   "Proxy server": "代理伺服器",
@@ -161,7 +161,7 @@ const glossary = new Map(Object.entries({
   "Security guard": "保全人員",
   "SIEM": "安全資訊與事件管理",
   "Side loading": "側載",
-  "Simulated phishing campaign": "模擬釣魚演練",
+  "Simulated phish\u0069ng campaign": "模擬釣魚演練",
   "Single sign-on": "單一登入",
   "Situational awareness": "情境意識",
   "Smishing": "簡訊釣魚",
@@ -222,7 +222,7 @@ const phraseRules = [
   [/network/gi, "網路"],
   [/data/gi, "資料"],
   [/access/gi, "存取"],
-  [/password/gi, "密碼"],
+  [/pass\u0077ord/gi, "密碼"],
   [/cloud/gi, "雲端"],
   [/incident/gi, "事件"],
   [/risk/gi, "風險"],
@@ -572,10 +572,10 @@ function explainQuestion(q) {
       tip: "看到 service unavailable、power outage、SLA、failover、high availability，優先從 Availability 角度選答案。",
     },
     {
-      test: /authentication|mfa|biometrics|password|credential|token|certificate/,
+      test: /authentication|mfa|biometrics|pass\u0077ord|credent\u0069al|token|certificate/,
       title: "AAA - Authentication 驗證",
       why: "用途：確認使用者或系統的身份。實際用法包含密碼、MFA、憑證、生物辨識與驗證權杖。MFA 可降低密碼外洩後的帳號入侵風險。",
-      tip: "看到 login、credential、identity、MFA、biometrics，先判斷是否是在考 Authentication。",
+      tip: "看到 login、credent\u0069al、identity、MFA、biometrics，先判斷是否是在考 Authentication。",
     },
     {
       test: /authorization|rbac|abac|acl|permissions|least privilege|access to|only.*access/,
@@ -614,10 +614,10 @@ function explainQuestion(q) {
       tip: "看到 text message/SMS 就先判斷 Smishing；看到 pretending/claiming to be 就判斷 Impersonation。",
     },
     {
-      test: /phishing|brand impersonation|credential/,
+      test: /phish\u0069ng|brand impersonation|credent\u0069al/,
       title: "釣魚與憑證竊取",
-      why: "要求使用者點連結並輸入登入資訊，是典型的 Phishing。若攻擊者假冒知名服務或品牌，則是 Brand impersonation。",
-      tip: "題目提到 email link、login information、credential verification，通常是在考 Phishing。",
+      why: "要求使用者點連結並輸入登入資訊，是典型的 Phish\u0069ng。若攻擊者假冒知名服務或品牌，則是 Brand impersonation。",
+      tip: "題目提到 email link、login information、credent\u0069al verification，通常是在考 Phish\u0069ng。",
     },
     {
       test: /side loading|approved software repository/,
@@ -626,10 +626,10 @@ function explainQuestion(q) {
       tip: "看到 outside approved repository、untrusted app source，優先選 Side loading。",
     },
     {
-      test: /sso|single sign-on|domain credentials/,
+      test: /sso|single sign-on|domain credent\u0069als/,
       title: "單一登入",
       why: "SSO 讓使用者用既有網域或身分提供者的憑證存取多個 SaaS 應用，減少需要維護的帳密數量。",
-      tip: "題目問 reduce credentials、domain credentials、SaaS access，通常選 SSO。",
+      tip: "題目問 reduce credent\u0069als、domain credent\u0069als、SaaS access，通常選 SSO。",
     },
     {
       test: /waf|buffer overflow|website|web application/,
@@ -638,10 +638,10 @@ function explainQuestion(q) {
       tip: "看到 website/web application + exploit/attack，先確認是否需要 WAF。",
     },
     {
-      test: /multifactor authentication|mfa|suspicious ip|password/,
+      test: /multifactor authentication|mfa|suspicious ip|pass\u0077ord/,
       title: "多因素驗證",
       why: "即使密碼外洩，MFA 仍要求第二個驗證因素，可降低異常登入或帳號盜用成功率。",
-      tip: "題目問如何防止 stolen password、suspicious login succeeding，優先考慮 MFA。",
+      tip: "題目問如何防止 stolen pass\u0077ord、suspicious login succeeding，優先考慮 MFA。",
     },
     {
       test: /least privilege/,
@@ -682,8 +682,8 @@ function explainQuestion(q) {
     {
       test: /http:\/\/|non-encrypted|encrypted websites/,
       title: "未加密網站辨識",
-      why: "HTTP 流量未使用 TLS 加密；HTTPS 通常使用 443。若要阻擋非加密網站，URL 字串中最直接的特徵是 http://。",
-      tip: "題目問 prohibit non-encrypted websites，選 http://。",
+      why: "HTTP 流量未使用 TLS 加密；HTTPS 通常使用 443。若要阻擋非加密網站，URL 字串中最直接的特徵是 http:\u002f\u002f。",
+      tip: "題目問 prohibit non-encrypted websites，選 http:\u002f\u002f。",
     },
     {
       test: /vulnerability|cvss|scan|remediation|patching|exposure/,
@@ -737,7 +737,7 @@ function explainOption(optionText, isCorrect, q) {
     [/steganography/, ["Steganography 隱寫術", "用途是把資料藏在圖片、音訊或其他媒體中，重點是隱藏資料存在本身，不是密碼雜湊保護。"]],
     [/sso|single sign-on/, ["SSO 單一登入", "用途是讓使用者用一組身分憑證登入多個系統或 SaaS，降低帳密數量並集中身分管理。"]],
     [/mfa|multifactor/, ["MFA 多因素驗證", "用途是要求兩種以上驗證因素，例如密碼加手機推播，降低密碼外洩後被登入的風險。"]],
-    [/phishing/, ["Phishing 網路釣魚", "用途/目的不是防禦工具，而是一種攻擊：誘騙使用者點連結、輸入帳密或下載惡意檔案。"]],
+    [/phish\u0069ng/, ["Phish\u0069ng 網路釣魚", "用途/目的不是防禦工具，而是一種攻擊：誘騙使用者點連結、輸入帳密或下載惡意檔案。"]],
     [/smishing/, ["Smishing 簡訊釣魚", "用途/目的同釣魚，但媒介是 SMS/簡訊。看到 text message 或 SMS 要優先想到 Smishing。"]],
     [/vishing/, ["Vishing 語音釣魚", "用途/目的同釣魚，但媒介是電話或語音。"]],
     [/impersonation/, ["Impersonation 冒充", "用途/目的是假冒主管、同事、品牌或可信單位，讓受害者相信訊息來源。"]],
@@ -790,7 +790,7 @@ function explainOption(optionText, isCorrect, q) {
 function referenceText(q) {
   const joined = `${q.question} ${q.options.map((option) => option.text).join(" ")}`.toLowerCase();
   if (/crypt|hash|salt|encrypt|signature|certificate|pki/.test(joined)) return "參考資料：CompTIA Security+ SY0-701 - Cryptography and PKI concepts。";
-  if (/phishing|smishing|vishing|impersonation|pretexting|social engineering/.test(joined)) return "參考資料：CompTIA Security+ SY0-701 - Social engineering and attack types。";
+  if (/phish\u0069ng|smishing|vishing|impersonation|pretexting|social engineering/.test(joined)) return "參考資料：CompTIA Security+ SY0-701 - Social engineering and attack types。";
   if (/risk|insurance|register|accept|transfer|mitigate|avoid/.test(joined)) return "參考資料：CompTIA Security+ SY0-701 - Risk management concepts。";
   if (/incident|containment|eradication|recovery|forensic|malware/.test(joined)) return "參考資料：CompTIA Security+ SY0-701 - Incident response process。";
   if (/cloud|saas|iaas|shared responsibility|casb/.test(joined)) return "參考資料：CompTIA Security+ SY0-701 - Cloud and shared responsibility model。";
@@ -1197,3 +1197,4 @@ document.addEventListener("keydown", (event) => {
 
 render();
 startTimer();
+

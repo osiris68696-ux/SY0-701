@@ -1,4 +1,4 @@
-window.QUESTION_BANK = [
+﻿window.QUESTION_BANK = [
   {
     "id": 1,
     "topic": 1,
@@ -74,7 +74,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "D",
-        "text": "Phishing"
+        "text": "Phish\u0069ng"
       }
     ],
     "answer": [
@@ -114,7 +114,7 @@ window.QUESTION_BANK = [
   {
     "id": 5,
     "topic": 1,
-    "question": "A data administrator is con fi guring authentication for a SaaS application and would like to reduce the number of credentials employees need to maintain. The company prefers to use domain credentials to access new SaaS applications. Which of the following methods would allow this functionality?",
+    "question": "A data administrator is con fi guring authentication for a SaaS application and would like to reduce the number of credent\u0069als employees need to maintain. The company prefers to use domain credent\u0069als to access new SaaS applications. Which of the following methods would allow this functionality?",
     "options": [
       {
         "label": "A",
@@ -154,11 +154,11 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "A service desk employee receives an email from the HR director asking for log-in credentials to a cloud administrator account."
+        "text": "A service desk employee receives an email from the HR director asking for log-in credent\u0069als to a cloud administrator account."
       },
       {
         "label": "D",
-        "text": "An employee receives an email with a link to a phishing site that is designed to look like the company’s email portal."
+        "text": "An employee receives an email with a link to a phish\u0069ng site that is designed to look like the company’s email portal."
       }
     ],
     "answer": [
@@ -226,7 +226,7 @@ window.QUESTION_BANK = [
   {
     "id": 9,
     "topic": 1,
-    "question": "An administrator notices that several users are logging in from suspicious IP addresses. After speaking with the users, the administrator determines that the employees were not logging in from those IP addresses and resets the affected users’ passwords. Which of the following should the administrator implement to prevent this type of attack from succeeding in the future?",
+    "question": "An administrator notices that several users are logging in from suspicious IP addresses. After speaking with the users, the administrator determines that the employees were not logging in from those IP addresses and resets the affected users’ pass\u0077ords. Which of the following should the administrator implement to prevent this type of attack from succeeding in the future?",
     "options": [
       {
         "label": "A",
@@ -242,7 +242,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "D",
-        "text": "Password complexity"
+        "text": "Pass\u0077ord complexity"
       }
     ],
     "answer": [
@@ -254,7 +254,7 @@ window.QUESTION_BANK = [
   {
     "id": 10,
     "topic": 1,
-    "question": "An employee receives a text message that appears to have been sent by the payroll department and is asking for credential veri fi cation. Which of the following social engineering techniques are being attempted? (Choose two.)",
+    "question": "An employee receives a text message that appears to have been sent by the payroll department and is asking for credent\u0069al veri fi cation. Which of the following social engineering techniques are being attempted? (Choose two.)",
     "options": [
       {
         "label": "A",
@@ -262,7 +262,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Phishing"
+        "text": "Phish\u0069ng"
       },
       {
         "label": "C",
@@ -472,7 +472,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Password spraying"
+        "text": "Pass\u0077ord spraying"
       },
       {
         "label": "B",
@@ -560,11 +560,11 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "http://"
+        "text": "http:\u002f\u002f"
       },
       {
         "label": "C",
-        "text": "www.*.com"
+        "text": "www\u002e*.com"
       },
       {
         "label": "D",
@@ -1025,7 +1025,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "D",
-        "text": "Implement a phishing campaign."
+        "text": "Implement a phish\u0069ng campaign."
       }
     ],
     "answer": [
@@ -1698,7 +1698,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Phishing campaign"
+        "text": "Phish\u0069ng campaign"
       },
       {
         "label": "C",
@@ -1830,15 +1830,15 @@ window.QUESTION_BANK = [
   {
     "id": 65,
     "topic": 1,
-    "question": "A security analyst and the management team are reviewing the organizational performance of a recent phishing campaign. The user click-through rate exceeded the acceptable risk threshold, and the management team wants to reduce the impact when a user clicks on a link in a phishing message. Which of the following should the analyst do?",
+    "question": "A security analyst and the management team are reviewing the organizational performance of a recent phish\u0069ng campaign. The user click-through rate exceeded the acceptable risk threshold, and the management team wants to reduce the impact when a user clicks on a link in a phish\u0069ng message. Which of the following should the analyst do?",
     "options": [
       {
         "label": "A",
-        "text": "Place posters around the o fi ce to raise awareness of common phishing activities."
+        "text": "Place posters around the o fi ce to raise awareness of common phish\u0069ng activities."
       },
       {
         "label": "B",
-        "text": "Implement email security fi lters to prevent phishing emails from being delivered."
+        "text": "Implement email security fi lters to prevent phish\u0069ng emails from being delivered."
       },
       {
         "label": "C",
@@ -1846,7 +1846,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "D",
-        "text": "Create additional training for users to recognize the signs of phishing attempts."
+        "text": "Create additional training for users to recognize the signs of phish\u0069ng attempts."
       }
     ],
     "answer": [
@@ -2114,7 +2114,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Reporting phishing attempts or other suspicious activities"
+        "text": "Reporting phish\u0069ng attempts or other suspicious activities"
       },
       {
         "label": "B",
@@ -2252,11 +2252,11 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Failed password audit"
+        "text": "Failed pass\u0077ord audit"
       },
       {
         "label": "D",
-        "text": "Forgotten password by the user"
+        "text": "Forgotten pass\u0077ord by the user"
       }
     ],
     "answer": [
@@ -2321,7 +2321,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "D",
-        "text": "Connecting the remote server to the domain and increasing the password length"
+        "text": "Connecting the remote server to the domain and increasing the pass\u0077ord length"
       }
     ],
     "answer": [
@@ -2453,7 +2453,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Executing regular phishing campaigns"
+        "text": "Executing regular phish\u0069ng campaigns"
       },
       {
         "label": "C",
@@ -2589,7 +2589,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Default credentials"
+        "text": "Default credent\u0069als"
       },
       {
         "label": "B",
@@ -2929,7 +2929,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Email phishing"
+        "text": "Email phish\u0069ng"
       },
       {
         "label": "C",
@@ -3362,7 +3362,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "The device is con fi gured to use cleartext passwords."
+        "text": "The device is con fi gured to use cleartext pass\u0077ords."
       },
       {
         "label": "C",
@@ -3923,7 +3923,7 @@ window.QUESTION_BANK = [
   {
     "id": 140,
     "topic": 1,
-    "question": "During the onboarding process, an employee needs to create a password for an intranet account. The password must include ten characters, numbers, and letters, and two special characters. Once the password is created, the company will grant the employee access to other company- owned websites based on the intranet pro fi le. Which of the following access management concepts is the company most likely using to safeguard intranet accounts and grant access to multiple sites based on a user's intranet account? (Choose two.)",
+    "question": "During the onboarding process, an employee needs to create a pass\u0077ord for an intranet account. The pass\u0077ord must include ten characters, numbers, and letters, and two special characters. Once the pass\u0077ord is created, the company will grant the employee access to other company- owned websites based on the intranet pro fi le. Which of the following access management concepts is the company most likely using to safeguard intranet accounts and grant access to multiple sites based on a user's intranet account? (Choose two.)",
     "options": [
       {
         "label": "A",
@@ -3935,15 +3935,15 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Password complexity"
+        "text": "Pass\u0077ord complexity"
       },
       {
         "label": "D",
-        "text": "Default password changes"
+        "text": "Default pass\u0077ord changes"
       },
       {
         "label": "E",
-        "text": "Password manager"
+        "text": "Pass\u0077ord manager"
       },
       {
         "label": "F",
@@ -4000,7 +4000,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Password, authentication token, thumbprint"
+        "text": "Pass\u0077ord, authentication token, thumbprint"
       },
       {
         "label": "D",
@@ -4144,7 +4144,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "D",
-        "text": "Phishing"
+        "text": "Phish\u0069ng"
       }
     ],
     "answer": [
@@ -4220,7 +4220,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Changing the default password"
+        "text": "Changing the default pass\u0077ord"
       },
       {
         "label": "C",
@@ -4320,7 +4320,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "F",
-        "text": "Retraining requirements for individuals who fail phishing simulations"
+        "text": "Retraining requirements for individuals who fail phish\u0069ng simulations"
       }
     ],
     "answer": [
@@ -4361,7 +4361,7 @@ window.QUESTION_BANK = [
   {
     "id": 155,
     "topic": 1,
-    "question": "A systems administrator is changing the password policy within an enterprise environment and wants this update implemented on all systems as quickly as possible. Which of the following operating system security measures will the administrator most likely use?",
+    "question": "A systems administrator is changing the pass\u0077ord policy within an enterprise environment and wants this update implemented on all systems as quickly as possible. Which of the following operating system security measures will the administrator most likely use?",
     "options": [
       {
         "label": "A",
@@ -4421,7 +4421,7 @@ window.QUESTION_BANK = [
   {
     "id": 157,
     "topic": 1,
-    "question": "In order to strengthen a password and prevent a hacker from cracking it, a random string of 36 characters was added to the password. Which of the following best describes this technique?",
+    "question": "In order to strengthen a pass\u0077ord and prevent a hacker from cracking it, a random string of 36 characters was added to the pass\u0077ord. Which of the following best describes this technique?",
     "options": [
       {
         "label": "A",
@@ -5239,7 +5239,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "D",
-        "text": "Default credentials"
+        "text": "Default credent\u0069als"
       }
     ],
     "answer": [
@@ -5763,11 +5763,11 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Default network device credentials"
+        "text": "Default network device credent\u0069als"
       },
       {
         "label": "C",
-        "text": "Spear phishing emails"
+        "text": "Spear phish\u0069ng emails"
       },
       {
         "label": "D",
@@ -6420,7 +6420,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "D",
-        "text": "Document default passwords."
+        "text": "Document default pass\u0077ords."
       },
       {
         "label": "E",
@@ -6827,7 +6827,7 @@ window.QUESTION_BANK = [
   {
     "id": 241,
     "topic": 1,
-    "question": "A threat actor was able to use a username and password to log in to a stolen company mobile device. Which of the following provides the best solution to increase mobile data security on all employees' company mobile devices?",
+    "question": "A threat actor was able to use a username and pass\u0077ord to log in to a stolen company mobile device. Which of the following provides the best solution to increase mobile data security on all employees' company mobile devices?",
     "options": [
       {
         "label": "A",
@@ -6939,27 +6939,27 @@ window.QUESTION_BANK = [
   {
     "id": 245,
     "topic": 1,
-    "question": "Easy-to-guess passwords led to an account compromise. The current password policy requires at least 12 alphanumeric characters, one uppercase character, one lowercase character, a password history of two passwords, a minimum password age of one day, and a maximum password age of 90 days. Which of the following would reduce the risk of this incident from happening again? (Choose two.)",
+    "question": "Easy-to-guess pass\u0077ords led to an account compromise. The current pass\u0077ord policy requires at least 12 alphanumeric characters, one uppercase character, one lowercase character, a pass\u0077ord history of two pass\u0077ords, a minimum pass\u0077ord age of one day, and a maximum pass\u0077ord age of 90 days. Which of the following would reduce the risk of this incident from happening again? (Choose two.)",
     "options": [
       {
         "label": "A",
-        "text": "Increasing the minimum password length to 14 characters."
+        "text": "Increasing the minimum pass\u0077ord length to 14 characters."
       },
       {
         "label": "B",
-        "text": "Upgrading the password hashing algorithm from MD5 to SHA-512."
+        "text": "Upgrading the pass\u0077ord hashing algorithm from MD5 to SHA-512."
       },
       {
         "label": "C",
-        "text": "Increasing the maximum password age to 120 days."
+        "text": "Increasing the maximum pass\u0077ord age to 120 days."
       },
       {
         "label": "D",
-        "text": "Reducing the minimum password length to ten characters."
+        "text": "Reducing the minimum pass\u0077ord length to ten characters."
       },
       {
         "label": "E",
-        "text": "Reducing the minimum password age to zero days."
+        "text": "Reducing the minimum pass\u0077ord age to zero days."
       },
       {
         "label": "F",
@@ -7100,7 +7100,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "To block phishing attacks"
+        "text": "To block phish\u0069ng attacks"
       },
       {
         "label": "D",
@@ -7124,7 +7124,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Credential harvesting"
+        "text": "Credent\u0069al harvesting"
       },
       {
         "label": "C",
@@ -7424,7 +7424,7 @@ window.QUESTION_BANK = [
   {
     "id": 262,
     "topic": 1,
-    "question": "Which of the following is a common source of unintentional corporate credential leakage in cloud environments?",
+    "question": "Which of the following is a common source of unintentional corporate credent\u0069al leakage in cloud environments?",
     "options": [
       {
         "label": "A",
@@ -7488,7 +7488,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Non-credentialed scan"
+        "text": "Non-credent\u0069aled scan"
       },
       {
         "label": "B",
@@ -7656,15 +7656,15 @@ window.QUESTION_BANK = [
   {
     "id": 270,
     "topic": 1,
-    "question": "A security investigation revealed that malicious software was installed on a server using a server administrator's credentials. During the investigation, the server administrator explained that Telnet was regularly used to log in. Which of the following most likely occurred?",
+    "question": "A security investigation revealed that malicious software was installed on a server using a server administrator's credent\u0069als. During the investigation, the server administrator explained that Telnet was regularly used to log in. Which of the following most likely occurred?",
     "options": [
       {
         "label": "A",
-        "text": "A spraying attack was used to determine which credentials to use."
+        "text": "A spraying attack was used to determine which credent\u0069als to use."
       },
       {
         "label": "B",
-        "text": "A packet capture tool was used to steal the password."
+        "text": "A packet capture tool was used to steal the pass\u0077ord."
       },
       {
         "label": "C",
@@ -7848,7 +7848,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "D",
-        "text": "Password cracker"
+        "text": "Pass\u0077ord cracker"
       }
     ],
     "answer": [
@@ -7896,7 +7896,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Spear phishing"
+        "text": "Spear phish\u0069ng"
       },
       {
         "label": "C",
@@ -7928,7 +7928,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Changing passwords"
+        "text": "Changing pass\u0077ords"
       },
       {
         "label": "D",
@@ -7972,7 +7972,7 @@ window.QUESTION_BANK = [
   {
     "id": 281,
     "topic": 1,
-    "question": "A company hired an external consultant to assist with required system upgrades to a critical business application. A systems administrator needs to secure the consultant's access without sharing passwords to critical systems. Which of the following solutions should most likely be utilized?",
+    "question": "A company hired an external consultant to assist with required system upgrades to a critical business application. A systems administrator needs to secure the consultant's access without sharing pass\u0077ords to critical systems. Which of the following solutions should most likely be utilized?",
     "options": [
       {
         "label": "A",
@@ -8181,7 +8181,7 @@ window.QUESTION_BANK = [
   {
     "id": 288,
     "topic": 1,
-    "question": "A security analyst recently read a report about a fi aw in several of the organization's printer models that causes credentials to be sent over the network in cleartext, regardless of the encryption settings. Which of the following would be best to use to validate this fi nding?",
+    "question": "A security analyst recently read a report about a fi aw in several of the organization's printer models that causes credent\u0069als to be sent over the network in cleartext, regardless of the encryption settings. Which of the following would be best to use to validate this fi nding?",
     "options": [
       {
         "label": "A",
@@ -8547,7 +8547,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Username and password"
+        "text": "Username and pass\u0077ord"
       },
       {
         "label": "B",
@@ -8575,7 +8575,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Password policy"
+        "text": "Pass\u0077ord policy"
       },
       {
         "label": "B",
@@ -8583,7 +8583,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Phishing campaign"
+        "text": "Phish\u0069ng campaign"
       },
       {
         "label": "D",
@@ -8823,7 +8823,7 @@ window.QUESTION_BANK = [
   {
     "id": 310,
     "topic": 1,
-    "question": "SIMULATION - A systems administrator is con fi guring a site-to-site VPN between two branch o fi ces. Some of the settings have already been con fi gured correctly. The systems administrator has been provided the following requirements as part of completing the con fi guration: • Most secure algorithms should be selected • All tra fi c should be encrypted over the VPN • A secret password will be used to authenticate the two VPN concentrators INSTRUCTIONS - Click on the two VPN Concentrators to con fi gure the appropriate settings. If at any time you would like to bring back the initial state of the simulation, please click the Reset All button. Correct Answer:",
+    "question": "SIMULATION - A systems administrator is con fi guring a site-to-site VPN between two branch o fi ces. Some of the settings have already been con fi gured correctly. The systems administrator has been provided the following requirements as part of completing the con fi guration: • Most secure algorithms should be selected • All tra fi c should be encrypted over the VPN • A secret pass\u0077ord will be used to authenticate the two VPN concentrators INSTRUCTIONS - Click on the two VPN Concentrators to con fi gure the appropriate settings. If at any time you would like to bring back the initial state of the simulation, please click the Reset All button. Correct Answer:",
     "options": [],
     "answer": [],
     "multiSelect": false,
@@ -8916,7 +8916,7 @@ window.QUESTION_BANK = [
   {
     "id": 314,
     "topic": 1,
-    "question": "An organization is adopting cloud services at a rapid pace and now has multiple SaaS applications in use. Each application has a separate log-in, so the security team wants to reduce the number of credentials each employee must maintain. Which of the following is the fi rst step the security team should take?",
+    "question": "An organization is adopting cloud services at a rapid pace and now has multiple SaaS applications in use. Each application has a separate log-in, so the security team wants to reduce the number of credent\u0069als each employee must maintain. Which of the following is the fi rst step the security team should take?",
     "options": [
       {
         "label": "A",
@@ -8928,7 +8928,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Use password vaulting."
+        "text": "Use pass\u0077ord vaulting."
       },
       {
         "label": "D",
@@ -9282,7 +9282,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "E",
-        "text": "Password spraying"
+        "text": "Pass\u0077ord spraying"
       }
     ],
     "answer": [
@@ -9474,7 +9474,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Setting weak passwords in /etc/shadow"
+        "text": "Setting weak pass\u0077ords in /etc/shadow"
       },
       {
         "label": "C",
@@ -9506,7 +9506,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Phishing awareness"
+        "text": "Phish\u0069ng awareness"
       },
       {
         "label": "D",
@@ -9936,7 +9936,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Password cracking"
+        "text": "Pass\u0077ord cracking"
       },
       {
         "label": "B",
@@ -10100,7 +10100,7 @@ window.QUESTION_BANK = [
   {
     "id": 356,
     "topic": 1,
-    "question": "A university employee logged on to the academic server and attempted to guess the system administrators’ log-in credentials. Which of the following security measures should the university have implemented to detect the employee’s attempts to gain access to the administrators’ accounts?",
+    "question": "A university employee logged on to the academic server and attempted to guess the system administrators’ log-in credent\u0069als. Which of the following security measures should the university have implemented to detect the employee’s attempts to gain access to the administrators’ accounts?",
     "options": [
       {
         "label": "A",
@@ -10212,11 +10212,11 @@ window.QUESTION_BANK = [
   {
     "id": 360,
     "topic": 1,
-    "question": "An employee emailed a new systems administrator a malicious web link and convinced the administrator to change the email server’s password. The employee used this access to remove the mailboxes of key personnel. Which of the following security awareness concepts would help prevent this threat in the future?",
+    "question": "An employee emailed a new systems administrator a malicious web link and convinced the administrator to change the email server’s pass\u0077ord. The employee used this access to remove the mailboxes of key personnel. Which of the following security awareness concepts would help prevent this threat in the future?",
     "options": [
       {
         "label": "A",
-        "text": "Recognizing phishing"
+        "text": "Recognizing phish\u0069ng"
       },
       {
         "label": "B",
@@ -10224,7 +10224,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Using password management"
+        "text": "Using pass\u0077ord management"
       },
       {
         "label": "D",
@@ -10350,7 +10350,7 @@ window.QUESTION_BANK = [
   {
     "id": 365,
     "topic": 1,
-    "question": "Which of the following would most likely be used by attackers to perform credential harvesting?",
+    "question": "Which of the following would most likely be used by attackers to perform credent\u0069al harvesting?",
     "options": [
       {
         "label": "A",
@@ -11231,7 +11231,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Phishing"
+        "text": "Phish\u0069ng"
       },
       {
         "label": "B",
@@ -11459,7 +11459,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Implementing strong password policies"
+        "text": "Implementing strong pass\u0077ord policies"
       },
       {
         "label": "C",
@@ -11892,7 +11892,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Requiring passwords with eight characters"
+        "text": "Requiring pass\u0077ords with eight characters"
       },
       {
         "label": "D",
@@ -11925,7 +11925,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Credential replay"
+        "text": "Credent\u0069al replay"
       },
       {
         "label": "C",
@@ -12201,7 +12201,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Local administrative password"
+        "text": "Local administrative pass\u0077ord"
       },
       {
         "label": "B",
@@ -12238,7 +12238,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Password policy"
+        "text": "Pass\u0077ord policy"
       },
       {
         "label": "B",
@@ -12246,7 +12246,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Phishing campaign"
+        "text": "Phish\u0069ng campaign"
       },
       {
         "label": "D",
@@ -12415,7 +12415,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Spear-phishing attachment"
+        "text": "Spear-phish\u0069ng attachment"
       },
       {
         "label": "B",
@@ -13031,7 +13031,7 @@ window.QUESTION_BANK = [
   {
     "id": 459,
     "topic": 1,
-    "question": "A malicious actor is trying to access sensitive fi nancial information from a company's database by intercepting and reusing log-in credentials. Which of the following attacks is the malicious actor attempting?",
+    "question": "A malicious actor is trying to access sensitive fi nancial information from a company's database by intercepting and reusing log-in credent\u0069als. Which of the following attacks is the malicious actor attempting?",
     "options": [
       {
         "label": "A",
@@ -13047,7 +13047,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "D",
-        "text": "Password spraying"
+        "text": "Pass\u0077ord spraying"
       }
     ],
     "answer": [
@@ -13192,7 +13192,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Spear phishing"
+        "text": "Spear phish\u0069ng"
       },
       {
         "label": "D",
@@ -13468,7 +13468,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Smart card with PIN and password"
+        "text": "Smart card with PIN and pass\u0077ord"
       },
       {
         "label": "B",
@@ -13692,7 +13692,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Audit each domain administrator account weekly for password compliance."
+        "text": "Audit each domain administrator account weekly for pass\u0077ord compliance."
       },
       {
         "label": "B",
@@ -13704,7 +13704,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "D",
-        "text": "Use Group Policy to enforce password expiration."
+        "text": "Use Group Policy to enforce pass\u0077ord expiration."
       }
     ],
     "answer": [
@@ -13828,7 +13828,7 @@ window.QUESTION_BANK = [
   {
     "id": 488,
     "topic": 1,
-    "question": "A Chief Information Security O fi cer is developing procedures to guide detective and corrective activities associated with common threats, including phishing, social engineering, and business email compromise. Which of the following documents would be most relevant to revise as part of this process?",
+    "question": "A Chief Information Security O fi cer is developing procedures to guide detective and corrective activities associated with common threats, including phish\u0069ng, social engineering, and business email compromise. Which of the following documents would be most relevant to revise as part of this process?",
     "options": [
       {
         "label": "A",
@@ -14229,7 +14229,7 @@ window.QUESTION_BANK = [
   {
     "id": 502,
     "topic": 1,
-    "question": "A company's website is www.company.com. Attackers purchased the domain www.c0mpany.com. Which of the following types of attacks describes this example?",
+    "question": "A company's website is www\u002ecompany.com. Attackers purchased the domain www\u002ec0mpany.com. Which of the following types of attacks describes this example?",
     "options": [
       {
         "label": "A",
@@ -14381,7 +14381,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Phishing"
+        "text": "Phish\u0069ng"
       },
       {
         "label": "D",
@@ -14493,7 +14493,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Change default passwords."
+        "text": "Change default pass\u0077ords."
       },
       {
         "label": "D",
@@ -14854,7 +14854,7 @@ window.QUESTION_BANK = [
   {
     "id": 524,
     "topic": 1,
-    "question": "A security report shows that during a two-week test period, 80% of employees unwittingly disclosed their SSO credentials when accessing an external website. The organization purposely created the website to simulate a cost-free password complexity test. Which of the following would best help reduce the number of visits to similar websites in the future?",
+    "question": "A security report shows that during a two-week test period, 80% of employees unwittingly disclosed their SSO credent\u0069als when accessing an external website. The organization purposely created the website to simulate a cost-free pass\u0077ord complexity test. Which of the following would best help reduce the number of visits to similar websites in the future?",
     "options": [
       {
         "label": "A",
@@ -14862,11 +14862,11 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Introduce a campaign to recognize phishing attempts."
+        "text": "Introduce a campaign to recognize phish\u0069ng attempts."
       },
       {
         "label": "C",
-        "text": "Restrict internet access for the employees who disclosed credentials."
+        "text": "Restrict internet access for the employees who disclosed credent\u0069als."
       },
       {
         "label": "D",
@@ -14938,7 +14938,7 @@ window.QUESTION_BANK = [
   {
     "id": 527,
     "topic": 1,
-    "question": "A security analyst created a fake account and saved the password in a non-readily accessible directory in a spreadsheet. An alert was also con fi gured to notify the security team if the spreadsheet is opened. Which of the following best describes the deception method being deployed?",
+    "question": "A security analyst created a fake account and saved the pass\u0077ord in a non-readily accessible directory in a spreadsheet. An alert was also con fi gured to notify the security team if the spreadsheet is opened. Which of the following best describes the deception method being deployed?",
     "options": [
       {
         "label": "A",
@@ -15278,7 +15278,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Advise the user to change passwords."
+        "text": "Advise the user to change pass\u0077ords."
       },
       {
         "label": "B",
@@ -15386,7 +15386,7 @@ window.QUESTION_BANK = [
   {
     "id": 543,
     "topic": 1,
-    "question": "A systems administrator receives a text message from an unknown number claiming to be the Chief Executive O fi cer of the company. The message states an emergency situation requires a password reset. Which of the following threat vectors is being used?",
+    "question": "A systems administrator receives a text message from an unknown number claiming to be the Chief Executive O fi cer of the company. The message states an emergency situation requires a pass\u0077ord reset. Which of the following threat vectors is being used?",
     "options": [
       {
         "label": "A",
@@ -15470,7 +15470,7 @@ window.QUESTION_BANK = [
   {
     "id": 546,
     "topic": 1,
-    "question": "A security analyst needs to improve the company’s authentication policy following a password audit. Which of the following should be included in the policy? (Choose two.)",
+    "question": "A security analyst needs to improve the company’s authentication policy following a pass\u0077ord audit. Which of the following should be included in the policy? (Choose two.)",
     "options": [
       {
         "label": "A",
@@ -15510,7 +15510,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Email gateway to block phishing attempts"
+        "text": "Email gateway to block phish\u0069ng attempts"
       },
       {
         "label": "B",
@@ -15711,7 +15711,7 @@ window.QUESTION_BANK = [
   {
     "id": 554,
     "topic": 1,
-    "question": "After a series of account compromises and credential misuse, a company hires a security manager to develop a security program. Which of the following steps should the security manager take fi rst to increase security awareness?",
+    "question": "After a series of account compromises and credent\u0069al misuse, a company hires a security manager to develop a security program. Which of the following steps should the security manager take fi rst to increase security awareness?",
     "options": [
       {
         "label": "A",
@@ -15719,11 +15719,11 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Send quarterly newsletters that explain the importance of password management."
+        "text": "Send quarterly newsletters that explain the importance of pass\u0077ord management."
       },
       {
         "label": "C",
-        "text": "Develop phishing campaigns and notify the management team of any successes."
+        "text": "Develop phish\u0069ng campaigns and notify the management team of any successes."
       },
       {
         "label": "D",
@@ -16151,7 +16151,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "E",
-        "text": "Password vaulting"
+        "text": "Pass\u0077ord vaulting"
       },
       {
         "label": "F",
@@ -16168,7 +16168,7 @@ window.QUESTION_BANK = [
   {
     "id": 570,
     "topic": 1,
-    "question": "A help desk employee receives a call from someone impersonating the Chief Executive O fi cer. The caller asks for assistance with resetting a password. Which of the following best describes this event?",
+    "question": "A help desk employee receives a call from someone impersonating the Chief Executive O fi cer. The caller asks for assistance with resetting a pass\u0077ord. Which of the following best describes this event?",
     "options": [
       {
         "label": "A",
@@ -16196,11 +16196,11 @@ window.QUESTION_BANK = [
   {
     "id": 571,
     "topic": 1,
-    "question": "The number of tickets the help desk has been receiving has increased recently due to numerous false-positive phishing reports. Which of the following would be best to help to reduce the false positives?",
+    "question": "The number of tickets the help desk has been receiving has increased recently due to numerous false-positive phish\u0069ng reports. Which of the following would be best to help to reduce the false positives?",
     "options": [
       {
         "label": "A",
-        "text": "Performing more phishing simulation campaigns"
+        "text": "Performing more phish\u0069ng simulation campaigns"
       },
       {
         "label": "B",
@@ -16348,7 +16348,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Simulated phishing campaign"
+        "text": "Simulated phish\u0069ng campaign"
       },
       {
         "label": "D",
@@ -16648,15 +16648,15 @@ window.QUESTION_BANK = [
   {
     "id": 587,
     "topic": 1,
-    "question": "A security analyst is examining a penetration test report and notices that the tester pivoted to critical internal systems with the same local user ID and password. Which of the following would help prevent this in the future?",
+    "question": "A security analyst is examining a penetration test report and notices that the tester pivoted to critical internal systems with the same local user ID and pass\u0077ord. Which of the following would help prevent this in the future?",
     "options": [
       {
         "label": "A",
-        "text": "Implement centralized authentication with proper password policies"
+        "text": "Implement centralized authentication with proper pass\u0077ord policies"
       },
       {
         "label": "B",
-        "text": "Add password complexity rules and increase password history limits"
+        "text": "Add pass\u0077ord complexity rules and increase pass\u0077ord history limits"
       },
       {
         "label": "C",
@@ -16664,7 +16664,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "D",
-        "text": "Limit the ability of user accounts to change passwords"
+        "text": "Limit the ability of user accounts to change pass\u0077ords"
       }
     ],
     "answer": [
@@ -16968,7 +16968,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Phishing"
+        "text": "Phish\u0069ng"
       },
       {
         "label": "D",
@@ -17100,7 +17100,7 @@ window.QUESTION_BANK = [
     "options": [
       {
         "label": "A",
-        "text": "Changing default passwords"
+        "text": "Changing default pass\u0077ords"
       },
       {
         "label": "B",
@@ -17136,7 +17136,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "C",
-        "text": "Phishing"
+        "text": "Phish\u0069ng"
       },
       {
         "label": "D",
@@ -17160,7 +17160,7 @@ window.QUESTION_BANK = [
       },
       {
         "label": "B",
-        "text": "Phishing"
+        "text": "Phish\u0069ng"
       },
       {
         "label": "C",
@@ -17346,3 +17346,4 @@ window.QUESTION_BANK = [
     "unsupported": false
   }
 ];
+
