@@ -327,7 +327,7 @@ footer {
   font-size: 14px;
 }
 
-.password-modal {
+.access-modal {
   position: fixed;
   inset: 0;
   z-index: 50;
@@ -337,11 +337,11 @@ footer {
   background: rgba(13, 23, 43, 0.42);
 }
 
-.password-modal.hidden {
+.access-modal.hidden {
   display: none;
 }
 
-.password-card {
+.access-card {
   width: min(380px, 100%);
   padding: 28px 30px 32px;
   border-radius: 0 0 14px 14px;
@@ -363,19 +363,19 @@ footer {
   font-size: 30px;
 }
 
-.password-card h2 {
+.access-card h2 {
   margin: 0 0 8px;
   color: #202633;
   font-size: 24px;
 }
 
-.password-card p {
+.access-card p {
   margin: 0 0 20px;
   color: #6b7588;
   font-weight: 700;
 }
 
-#password-input {
+#access-input {
   width: 100%;
   height: 46px;
   border: 0;
@@ -386,7 +386,7 @@ footer {
   outline: none;
 }
 
-.password-error {
+.access-error {
   min-height: 22px;
   margin-top: 8px;
   color: var(--red);
@@ -394,14 +394,14 @@ footer {
   font-weight: 700;
 }
 
-.password-actions {
+.access-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   margin-top: 16px;
 }
 
-.password-actions button {
+.access-actions button {
   min-height: 48px;
   border: 0;
   border-radius: 10px;
@@ -409,12 +409,12 @@ footer {
   font-weight: 900;
 }
 
-#password-cancel {
+#access-cancel {
   background: #f2f3f7;
   color: #4b5563;
 }
 
-#password-submit {
+#access-submit {
   background: #5446e8;
   color: #fff;
   box-shadow: 0 5px 12px rgba(79, 70, 229, 0.28);
@@ -960,6 +960,90 @@ body[data-mode="result"] #question-text {
 
 .exam-options .option.incorrect {
   background: #c7352c;
+}
+
+.translation-toggle {
+  min-height: 38px;
+  margin: 16px 0 0;
+  padding: 0 18px;
+  border: 1px solid #b8c8ff;
+  border-radius: 7px;
+  background: #eef3ff;
+  color: #4f46e5;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.translation-toggle.active {
+  background: #e1e9ff;
+}
+
+.translation-panel {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.translation-panel.hidden {
+  display: none;
+}
+
+.translation-card {
+  padding: 16px;
+  border: 1px solid #c9d9f4;
+  border-radius: 8px;
+  line-height: 1.75;
+}
+
+.translation-card h3 {
+  margin: 0 0 10px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.translation-card p {
+  margin: 0 0 8px;
+}
+
+.question-translation {
+  background: #eef5ff;
+}
+
+.option-translation {
+  background: #fff;
+}
+
+.concept-analysis {
+  border-color: #a9ecc7;
+  background: #effcf5;
+  color: #064e2a;
+}
+
+.translation-options {
+  display: grid;
+  gap: 8px;
+}
+
+.translation-option {
+  padding: 12px 14px;
+  border-left: 4px solid;
+  border-radius: 7px;
+}
+
+.translation-option.correct {
+  border-color: #20b66a;
+  background: #e9fbf0;
+  color: #065f35;
+}
+
+.translation-option.wrong {
+  border-color: #ef4444;
+  background: #fff0f0;
+  color: #9f1239;
+}
+
+.translation-option span {
+  margin-left: 4px;
 }
 
 .exam-feedback {

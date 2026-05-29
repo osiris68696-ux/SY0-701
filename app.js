@@ -1,5 +1,5 @@
-const STORAGE_KEY = "sy0-701-practice-state-v17";
-const EXAM_PASSWORD = "01156688@";
+const STORAGE_KEY = "sy0-701-practice-state-v19";
+const ACCESS_CODE = "01156688@";
 const questions = window.QUESTION_BANK || [];
 
 const uiText = {
@@ -247,11 +247,11 @@ const els = {
   langSelect: document.getElementById("language-select"),
   scopeSelect: document.getElementById("scope-select"),
   randomize: document.getElementById("randomize-select"),
-  passwordModal: document.getElementById("password-modal"),
-  passwordInput: document.getElementById("password-input"),
-  passwordError: document.getElementById("password-error"),
-  passwordCancel: document.getElementById("password-cancel"),
-  passwordSubmit: document.getElementById("password-submit"),
+  accessModal: document.getElementById("access-modal"),
+  accessInput: document.getElementById("access-input"),
+  accessError: document.getElementById("access-error"),
+  accessCancel: document.getElementById("access-cancel"),
+  accessSubmit: document.getElementById("access-submit"),
   startButton: document.getElementById("start-button"),
   setupCount: document.getElementById("setup-question-count"),
   setupTime: document.getElementById("setup-time"),
@@ -261,6 +261,8 @@ const els = {
   text: document.getElementById("question-text"),
   source: document.getElementById("english-source"),
   options: document.getElementById("options"),
+  translationToggle: document.getElementById("translation-toggle"),
+  translationPanel: document.getElementById("translation-panel"),
   feedback: document.getElementById("feedback"),
   flag: document.getElementById("flag-button"),
   jump: document.getElementById("jump-input"),
@@ -328,33 +330,33 @@ function updateLockControls() {
   els.startButton.textContent = examUnlocked ? "開始作答" : "🔒 點擊解鎖（隨機派題）";
 }
 
-function openPasswordModal() {
-  els.passwordModal.classList.remove("hidden");
-  els.passwordInput.value = "";
-  els.passwordError.textContent = "";
-  setTimeout(() => els.passwordInput.focus(), 0);
+function openAccessModal() {
+  els.accessModal.classList.remove("hidden");
+  els.accessInput.value = "";
+  els.accessError.textContent = "";
+  setTimeout(() => els.accessInput.focus(), 0);
 }
 
-function closePasswordModal() {
-  els.passwordModal.classList.add("hidden");
-  els.passwordInput.value = "";
-  els.passwordError.textContent = "";
+function closeAccessModal() {
+  els.accessModal.classList.add("hidden");
+  els.accessInput.value = "";
+  els.accessError.textContent = "";
 }
 
-function verifyPassword() {
-  if (els.passwordInput.value === EXAM_PASSWORD) {
+function verifyAccessCode() {
+  if (els.accessInput.value === ACCESS_CODE) {
     examUnlocked = true;
-    closePasswordModal();
+    closeAccessModal();
     updateLockControls();
     return;
   }
-  els.passwordError.textContent = "密碼錯誤，請重新輸入。";
-  els.passwordInput.select();
+  els.accessError.textContent = "解鎖碼錯誤，請重新輸入。";
+  els.accessInput.select();
 }
 
 function startExam() {
   if (!examUnlocked) {
-    openPasswordModal();
+    openAccessModal();
     return;
   }
   const countValue = els.countSelect.value;
@@ -404,13 +406,21 @@ function applyPhraseRules(text) {
 }
 
 function renderOptionText(text) {
-  if (state.language === "en") return text;
-  const translated = translateText(text);
-  return translated === text ? text : `${translated} (${text})`;
+  return text;
 }
 
 function renderQuestionText(question) {
-  return state.language === "zh" ? translateText(question) : question;
+  return question;
+}
+
+function translatedOptionText(text) {
+  const normalized = text.replace(/\.$/, "");
+  return glossary.get(text) || glossary.get(normalized) || translateText(text);
+}
+
+function bilingualOptionText(text) {
+  const translated = translatedOptionText(text);
+  return translated === text ? text : `${translated}（${text}）`;
 }
 
 function translateText(text) {
@@ -788,6 +798,44 @@ function referenceText(q) {
   return "參考資料：CompTIA Security+ SY0-701 Exam Objectives。";
 }
 
+function renderQuestionAnalysis(q) {
+  const explanation = explainQuestion(q);
+  const translatedQuestion = translateText(q.question);
+  const optionRows = q.options.map((option) => {
+    const isCorrect = q.answer.includes(option.label);
+    return `
+      <div class="translation-option ${isCorrect ? "correct" : "wrong"}">
+        <strong>${isCorrect ? "☑ 正確" : "✕ 錯誤"} - ${escapeHtml(option.label)}.</strong>
+        <span>${escapeHtml(bilingualOptionText(option.text))}</span>
+      </div>
+    `;
+  }).join("");
+  const correctDetails = q.answer.map((label) => {
+    const option = q.options.find((item) => item.label === label);
+    if (!option) return "";
+    const detail = explainOption(option.text, true, q);
+    return `<p><strong>${escapeHtml(label)}. ${escapeHtml(detail.title)}：</strong>${escapeHtml(detail.usage)}</p>`;
+  }).join("");
+
+  return `
+    <div class="translation-card question-translation">
+      <h3>📝 題目翻譯</h3>
+      <p>${escapeHtml(translatedQuestion)}</p>
+    </div>
+    <div class="translation-card option-translation">
+      <h3>📋 選項翻譯與正解標示</h3>
+      <div class="translation-options">${optionRows}</div>
+    </div>
+    <div class="translation-card concept-analysis">
+      <h3>💡 觀念解析</h3>
+      ${correctDetails}
+      <p><strong>判斷方式：</strong>${escapeHtml(explanation.why)}</p>
+      <p><strong>考試小技巧：</strong>${escapeHtml(explanation.tip)}</p>
+      <p>${escapeHtml(referenceText(q))}</p>
+    </div>
+  `;
+}
+
 function renderQuestion() {
   const q = currentQuestion();
   const selected = selectedFor(q.id);
@@ -799,18 +847,21 @@ function renderQuestion() {
   els.text.style.fontWeight = "400";
   els.text.style.fontSize = "17px";
   els.text.style.lineHeight = "1.7";
-  els.source.textContent = state.language === "zh" ? `英文原題：${q.question}` : "";
-  els.source.classList.toggle("visible", state.language === "zh");
+  els.source.textContent = "";
+  els.source.classList.toggle("visible", false);
   els.flag.textContent = "標記複查";
   els.flag.classList.toggle("marked", state.flagged.includes(q.id));
   els.options.innerHTML = "";
+  els.translationPanel.innerHTML = renderQuestionAnalysis(q);
+  els.translationPanel.classList.add("hidden");
+  els.translationToggle.classList.remove("active");
 
   q.options.forEach((option) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "option";
     button.disabled = q.unsupported;
-    button.innerHTML = `<span class="label">${option.label}</span><span>${renderOptionText(option.text)}</span>`;
+    button.innerHTML = `<span class="label">${option.label}</span><span>${escapeHtml(option.text)}</span>`;
     button.classList.toggle("selected", selected.includes(option.label));
     if (state.mode === "result" && result !== undefined) {
       button.classList.toggle("correct", q.answer.includes(option.label));
@@ -1020,14 +1071,14 @@ function render() {
 }
 
 document.getElementById("start-button").addEventListener("click", startExam);
-els.passwordCancel.addEventListener("click", closePasswordModal);
-els.passwordSubmit.addEventListener("click", verifyPassword);
-els.passwordInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") verifyPassword();
-  if (event.key === "Escape") closePasswordModal();
+els.accessCancel.addEventListener("click", closeAccessModal);
+els.accessSubmit.addEventListener("click", verifyAccessCode);
+els.accessInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") verifyAccessCode();
+  if (event.key === "Escape") closeAccessModal();
 });
-els.passwordModal.addEventListener("click", (event) => {
-  if (event.target === els.passwordModal) closePasswordModal();
+els.accessModal.addEventListener("click", (event) => {
+  if (event.target === els.accessModal) closeAccessModal();
 });
 document.getElementById("back-to-setup").addEventListener("click", () => {
   stopTimer();
@@ -1089,6 +1140,10 @@ els.flag.addEventListener("click", () => {
 
 document.getElementById("check-button").addEventListener("click", checkCurrent);
 document.getElementById("reveal-button").addEventListener("click", revealCurrent);
+els.translationToggle.addEventListener("click", () => {
+  const isHidden = els.translationPanel.classList.toggle("hidden");
+  els.translationToggle.classList.toggle("active", !isHidden);
+});
 document.getElementById("prev-button").addEventListener("click", () => move(-1));
 document.getElementById("next-button").addEventListener("click", () => move(1));
 document.getElementById("random-button").addEventListener("click", () => {
